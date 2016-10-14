@@ -24,29 +24,7 @@ export class CtrInput {
     private _searchStr = "";
     private _displayStr = "";
 
-    constructor( @Host() private completer: CtrCompleter) {
-        this.completer.selected.subscribe((item: CompleterItem) => {
-            if (this.clearSelected) {
-                this.searchStr = "";
-            } else {
-                this.searchStr = item.title;
-            }
-            this.ngModelChange.emit(this.searchStr);
-        });
-        this.completer.highlighted.subscribe((item: CompleterItem) => {
-            this._displayStr = item.title;
-            this.ngModelChange.emit(item.title);
-        });
-    }
-
-    @HostListener("input", ["$event"])
-    public onInputChange(event: any) {
-        this.searchStr = event.target.value;
-    }
-
-    @HostListener("keyup", ["$event"])
-    public keyupHandler(event: any) {
-
+		private _handleInputEvents(event: any) {
         if (event.keyCode === KEY_LF || event.keyCode === KEY_RT || event.keyCode === KEY_TAB) {
             // do nothing
             return;
@@ -72,7 +50,32 @@ export class CtrInput {
 
             this.completer.search(this.searchStr);
         }
+		}
 
+    constructor( @Host() private completer: CtrCompleter) {
+        this.completer.selected.subscribe((item: CompleterItem) => {
+            if (this.clearSelected) {
+                this.searchStr = "";
+            } else {
+                this.searchStr = item.title;
+            }
+            this.ngModelChange.emit(this.searchStr);
+        });
+        this.completer.highlighted.subscribe((item: CompleterItem) => {
+            this._displayStr = item.title;
+            this.ngModelChange.emit(item.title);
+        });
+    }
+
+    @HostListener("input", ["$event"])
+    public onInputChange(event: any) {
+        this.searchStr = event.target.value;
+				this._handleInputEvents(event);
+    }
+
+    @HostListener("keyup", ["$event"])
+    public keyupHandler(event: any) {
+				this._handleInputEvents(event);
     }
 
     @HostListener("keydown", ["$event"])
