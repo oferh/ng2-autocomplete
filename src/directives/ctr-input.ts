@@ -24,7 +24,17 @@ export class CtrInput {
     private _searchStr = "";
     private _displayStr = "";
 
+    private _keyupActive: boolean = false;
+
     private handleInputEvents(event: any) {
+
+        // this method is called by both `input` and `keyup` event.
+        // to prevent double-queries, only do the search only once.
+        // `_keyupActive` is set to `true` for `keyup` event and set to `false` for `input` event.
+        if (this._keyupActive) {
+            return;
+        }
+
         if (event.keyCode === KEY_LF || event.keyCode === KEY_RT || event.keyCode === KEY_TAB) {
             // do nothing
             return;
@@ -50,7 +60,7 @@ export class CtrInput {
 
             this.completer.search(this.searchStr);
         }
-		}
+    }
 
     constructor( @Host() private completer: CtrCompleter) {
         this.completer.selected.subscribe((item: CompleterItem) => {
@@ -70,12 +80,14 @@ export class CtrInput {
     @HostListener("input", ["$event"])
     public onInputChange(event: any) {
         this.searchStr = event.target.value;
-				this.handleInputEvents(event);
+        this._keyupActive = false;
+        this.handleInputEvents(event);
     }
 
     @HostListener("keyup", ["$event"])
     public keyupHandler(event: any) {
-				this.handleInputEvents(event);
+        this._keyupActive = true;
+        this.handleInputEvents(event);
     }
 
     @HostListener("keydown", ["$event"])
