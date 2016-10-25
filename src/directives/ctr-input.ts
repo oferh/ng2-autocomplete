@@ -24,7 +24,7 @@ export class CtrInput {
     private _searchStr = "";
     private _displayStr = "";
 
-		private _handleInputEvents(event: any) {
+    private handleInputEvents(event: any) {
         if (event.keyCode === KEY_LF || event.keyCode === KEY_RT || event.keyCode === KEY_TAB) {
             // do nothing
             return;
@@ -70,12 +70,12 @@ export class CtrInput {
     @HostListener("input", ["$event"])
     public onInputChange(event: any) {
         this.searchStr = event.target.value;
-				this._handleInputEvents(event);
+				this.handleInputEvents(event);
     }
 
     @HostListener("keyup", ["$event"])
     public keyupHandler(event: any) {
-				this._handleInputEvents(event);
+				this.handleInputEvents(event);
     }
 
     @HostListener("keydown", ["$event"])
