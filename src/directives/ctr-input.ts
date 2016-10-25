@@ -24,28 +24,16 @@ export class CtrInput {
     private _searchStr = "";
     private _displayStr = "";
 
-    constructor( @Host() private completer: CtrCompleter) {
-        this.completer.selected.subscribe((item: CompleterItem) => {
-            if (this.clearSelected) {
-                this.searchStr = "";
-            } else {
-                this.searchStr = item.title;
-            }
-            this.ngModelChange.emit(this.searchStr);
-        });
-        this.completer.highlighted.subscribe((item: CompleterItem) => {
-            this._displayStr = item.title;
-            this.ngModelChange.emit(item.title);
-        });
-    }
+    private _keyupActive: boolean = false;
 
-    @HostListener("input", ["$event"])
-    public onInputChange(event: any) {
-        this.searchStr = event.target.value;
-    }
+    private handleInputEvents(event: any) {
 
-    @HostListener("keyup", ["$event"])
-    public keyupHandler(event: any) {
+        // this method is called by both `input` and `keyup` event.
+        // to prevent double-queries, only do the search only once.
+        // `_keyupActive` is set to `true` for `keyup` event and set to `false` for `input` event.
+        if (this._keyupActive) {
+            return;
+        }
 
         if (event.keyCode === KEY_LF || event.keyCode === KEY_RT || event.keyCode === KEY_TAB) {
             // do nothing
@@ -72,7 +60,34 @@ export class CtrInput {
 
             this.completer.search(this.searchStr);
         }
+    }
 
+    constructor( @Host() private completer: CtrCompleter) {
+        this.completer.selected.subscribe((item: CompleterItem) => {
+            if (this.clearSelected) {
+                this.searchStr = "";
+            } else {
+                this.searchStr = item.title;
+            }
+            this.ngModelChange.emit(this.searchStr);
+        });
+        this.completer.highlighted.subscribe((item: CompleterItem) => {
+            this._displayStr = item.title;
+            this.ngModelChange.emit(item.title);
+        });
+    }
+
+    @HostListener("input", ["$event"])
+    public onInputChange(event: any) {
+        this.searchStr = event.target.value;
+        this._keyupActive = false;
+        this.handleInputEvents(event);
+    }
+
+    @HostListener("keyup", ["$event"])
+    public keyupHandler(event: any) {
+        this._keyupActive = true;
+        this.handleInputEvents(event);
     }
 
     @HostListener("keydown", ["$event"])
