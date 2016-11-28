@@ -54,7 +54,7 @@ export class CtrList implements OnInit, CompleterList {
                     this.ctx.searchInitialized = true;
                     this.ctx.searching = false;
                     this.ctx.results = results;
-                    if (this.ctrListAutoMatch && results.length === 1 &&
+                    if (this.ctrListAutoMatch && results.length === 1 && results[0].title && this.term &&
                         results[0].title.toLocaleLowerCase() === this.term.toLocaleLowerCase()) {
                         // Do automatch
                         this.completer.onSelected(results[0]);
