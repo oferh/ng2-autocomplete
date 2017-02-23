@@ -12,7 +12,7 @@
     "postbuild:ngc": "cross-env ./node_modules/.bin/ncp .tmp/esm/src dist",
     "copy": "cross-env node copy-dist.js",
     "packagejson": "node ./create-package-json.js",
-    "bundle:umd": "cross-env ./node_modules/.bin/rollup -c rollup.config.js && zopfli dist/ng2-completer.umd.js",
+    "bundle:umd": "cross-env ./node_modules/.bin/rollup -c rollup.config.js",
     "build:demo:dev": "cross-env NG2_COMPLETER_DEMO=y webpack --progress --color",
     "build:demo:prod": "cross-env NG2_COMPLETER_DEMO=y NODE_ENV=production webpack --progress --color",
     "start": "cross-env NG2_COMPLETER_DEMO=y webpack-dev-server --progress",

@@ -49,7 +49,10 @@ export class RemoteData extends CompleterBaseData {
             .map((res: Response) => res.json())
             .map((data: any) => {
                 let matchaes = this.extractValue(data, this._dataField);
-                return this.extractMatches(matchaes, term);
+                // remote data service has already supplied matching items
+                // so there is no need to further "extractMatches," here
+                //return this.extractMatches(matchaes, term);
+                return matchaes;
             })
             .map(
             (matches: any[]) => {
