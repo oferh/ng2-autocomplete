@@ -32,7 +32,7 @@
   "license": "Apache-2.0",
   "typings": "./bundles/src/index.d.ts",
   "repository": "oferh/ng2-completer",
-  "dependencies": {
+  "peerDependencies": {
     "@angular/common": "^2.1.0",
     "@angular/compiler": "^2.1.0",
     "@angular/core": "^2.1.0",
