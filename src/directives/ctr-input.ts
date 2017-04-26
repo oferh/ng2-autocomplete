@@ -149,7 +149,7 @@ export class CtrInput {
     }
 
     @HostListener("focus", ["$event"])
-    public onfocus() {
+    public onfocus($event) {
         if (this.blurTimer) {
             this.blurTimer.unsubscribe();
             this.blurTimer = null;
