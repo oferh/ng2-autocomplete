@@ -293,4 +293,31 @@
 	</div>
 </div>
 
+<h3>Remote data with response formatter</h3>
+<p>
+    Remote data of countries with 
+    <code>minSearchLength</code>
+    and <code>responseFormatter</code>
+</p>
+
+
+<div class="card">
+	<div class="card-block">
+		<div class="form-group row">
+			<div class="col-5">
+				<ng2-completer 
+                    [dataService]="dataRemoteResponseFormatter" 
+                    [minSearchLength]="1"
+                    [placeholder]="'Search for country'"
+                    (selected)="onCountrySelectedResponseFormatter($event)"
+                    [inputClass]="'form-control'">
+				</ng2-completer>
+            </div>
+			<div class="col-6">
+				<p class="form-control-static"><b> {{countryNameResponseFormatter}}</b></p>
+			</div>
+		</div>
+	</div>
+</div>
+
 <p style="margin-bottom: 10em;"></p>

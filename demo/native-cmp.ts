@@ -68,9 +68,11 @@ export class NativeCmp {
     private dataService: CompleterData;
     private dataService2: CompleterData;
     private countryName2 = "";
+    private countryNameResponseFormatter = "";
     private quote = "";
     private dataRemote: CompleterData;
     private dataRemote2: RemoteData;
+    private dataRemoteResponseFormatter: RemoteData;
     private dataService3: CompleterData;
     private dataService4: CompleterData;
     private customData: CustomData;
@@ -91,12 +93,35 @@ export class NativeCmp {
             return `http://www.omdbapi.com/?s=${term}&type=movie`;
         });
         this.dataRemote2.dataField("Search");
+        this.setDataResponseFormatter(completerService);
         // For async local the source can also be HTTP request
         // let source = http.get("https://raw.githubusercontent.com/oferh/ng2-completer/master/demo/res/data/countries.json?").map((res: any) => res.json());
         let source = Observable.from([this.countries]).delay(3000);
         this.dataService3 = completerService.local(<Observable<any[]>>source, "name", "name");
         this.customData = new CustomData(http);
         this.dataService4 = completerService.local(this.colors, null, null);
+    }
+
+    private setDataResponseFormatter(completerService: CompleterService){
+        this.dataRemoteResponseFormatter = completerService.remote(
+            "https://raw.githubusercontent.com/oferh/ng2-completer/master/demo/res/data/countries.json?",
+            "name",
+            "name");
+        this.dataRemoteResponseFormatter.descriptionField("description");
+        this.dataRemoteResponseFormatter.responseFormatter(function(data:CompleterItem[]):CompleterItem[]{
+            for(let i in data){
+                data[i]['description'] = 'code:' + data[i].originalObject.code;
+            }
+            return data;
+        });
+    }
+    
+    public onCountrySelectedResponseFormatter(selected: CompleterItem) {
+        if (selected) {
+            this.countryNameResponseFormatter = selected.title;
+        } else {
+            this.countryNameResponseFormatter = "";
+        }
     }
 
     public onCountrySelected(selected: CompleterItem) {
