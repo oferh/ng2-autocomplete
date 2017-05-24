@@ -11,6 +11,7 @@ export abstract class CompleterBaseData extends Subject<CompleterItem[]> impleme
     protected _titleField: string;
     protected _descriptionField: string;
     protected _imageField: string;
+    private formatterFunction:Function;
 
     constructor() {
         super();
@@ -72,6 +73,10 @@ export abstract class CompleterBaseData extends Subject<CompleterItem[]> impleme
 
     }
 
+    public responseFormatter(formatterFunction:Function){
+        this.formatterFunction = formatterFunction;
+    }
+
     protected extractMatches(data: any[], term: string) {
         let matches: any[] = [];
         const searchFields = this._searchFields ? this._searchFields.split(",") : null;
@@ -127,6 +132,17 @@ export abstract class CompleterBaseData extends Subject<CompleterItem[]> impleme
                 }
             }
         }
-        return results;
+        return this.executeFormatterFunction(results);
+    }
+    
+    private executeFormatterFunction(data:CompleterItem[]): CompleterItem[]{
+        try{
+            let fn = this.formatterFunction;
+            if(typeof fn !== 'undefined' && fn !== null){
+                let temp:CompleterItem[] = fn(data);
+                return temp;
+            }
+        }catch(e){console.warn(e);}
+        return data;
     }
 }

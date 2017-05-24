@@ -43,3 +43,4 @@ Status API Training Shop Blog About Pricing
 
 # Jspm bundle
 src/demo/app-bundle.*
+/nbproject/

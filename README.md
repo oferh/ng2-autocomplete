@@ -177,6 +177,7 @@ Create remote data provider by calling `CompleterService.remote`.
 |imageField|string|Name of the field to use as image url for the list item.|
 |urlFormater|(term: string) => string|Function that get's the searchterm and returns the search url before each search.|
 |dataField|string|The field in the response that includes the data.|
+|responseFormatter|Function|A function that will modify raw response from remote API before it is rendered in the drop-down. Useful for adding data that may not be available from the API. The specified function must return the object in the format that angucomplete understands.|
 |headers|Headers (@angular/http)|**Deprecated**  use `requestOptions` instead. HTTP request headers that should be sent with the search request.
 |requestOptions|RequestOptions (@angular/http)|HTTP request options that should be sent with the search request.|
 
