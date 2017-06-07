@@ -1,6 +1,6 @@
 <div class="completer-holder" ctrCompleter>
     <md-input-container class="completer-input">
-        <input mdInput ctrInput="clearSelected=clearSelected; overrideSuggested=overrideSuggested; fillHighlighted=fillHighlighted" [(ngModel)]="searchStr" 
+        <input mdInput ctrInput="clearSelected=clearSelected; overrideSuggested=overrideSuggested; fillHighlighted=fillHighlighted; forceSelection=forceSelection" [(ngModel)]="searchStr" 
             [attr.name]="inputName" [attr.maxlength]="maxChars" [tabindex]="fieldTabindex" [disabled]="disableInput" (blur)="onBlur()" [placeholder]="placeholder"
             autocomplete="off" autocorrect="off" autocapitalize="off">
     </md-input-container>
