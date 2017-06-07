@@ -27,7 +27,7 @@ export class CtrInput {
     @Input("overrideSuggested") public overrideSuggested = false;
     @Input("fillHighlighted") public fillHighlighted = true;
     @Input("openOnFocus") public openOnFocus = false;
-    @Input("forceSelection") public forceSelection = true;
+    @Input("forceSelection") public forceSelection = false;
 
     @Output() public ngModelChange: EventEmitter<any> = new EventEmitter();
 
