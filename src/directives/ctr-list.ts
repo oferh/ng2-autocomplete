@@ -28,6 +28,7 @@ export class CtrList implements OnInit, CompleterList {
     @Input() public ctrListAutoMatch = false;
     @Input() public ctrListAutoHighlight = false;
     @Input() public ctrListDisplaySearching = true;
+    @Input() public ctrListCacheSearchTerm = true;
 
     private _dataService: CompleterData;
     // private results: CompleterItem[] = [];
@@ -100,7 +101,8 @@ export class CtrList implements OnInit, CompleterList {
     }
 
     public search(term: string) {
-        if (!isNil(term) && term.length >= this.ctrListMinSearchLength && this.term !== term) {
+        if (!isNil(term) && term.length >= this.ctrListMinSearchLength &&
+            (!this.ctrListCacheSearchTerm || (this.term !== term))) {
             if (this.searchTimer) {
                 this.searchTimer.unsubscribe();
                 this.searchTimer = null;
@@ -135,7 +137,7 @@ export class CtrList implements OnInit, CompleterList {
     }
 
     public open() {
-        if (!this.ctx.searchInitialized) {
+        if (!this.ctrListCacheSearchTerm || !this.ctx.searchInitialized) {
             this.search("");
         }
         this.refreshTemplate();
