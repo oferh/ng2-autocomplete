@@ -83,7 +83,7 @@ export class CtrInput {
         else if (event.keyCode === KEY_DW) {
             event.preventDefault();
 
-            this.completer.search(this.searchStr);
+            if (!this.completer.opened) { this.completer.search(this.searchStr) }
         }
         else if (event.keyCode === KEY_ES) {
             if (this.completer.isOpen) {
