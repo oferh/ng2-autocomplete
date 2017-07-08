@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 1.5.2 (2017-06-16)
+
+### Fixed bugs
+- ng build --prod error: #245
+
 ## 1.5.1 (2017-06-14)
 
 ### Fixed bugs

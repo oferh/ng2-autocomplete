@@ -14,8 +14,8 @@ npm install ng2-completer --save
 
 ## Usage
 
-The module you want to use ng2-completer in must import `Ng2CompleterModule` and `FormsModule` (to use the ngModel 
-directive on ng2-completer).  `Ng2CompleterModule` provides the `CompleterService`, and declares the `ng2-completer` 
+The module you want to use ng2-completer in must import `Ng2CompleterModule` and `FormsModule` (to use the ngModel
+directive on ng2-completer).  `Ng2CompleterModule` provides the `CompleterService`, and declares the `ng2-completer`
 directive.
 ```ts
 import { NgModule } from '@angular/core';
@@ -23,7 +23,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from "@angular/forms";
 import { AppComponent } from './app.component';
 import { Ng2CompleterModule } from "ng2-completer";
- 
+
 @NgModule({
   imports: [
       BrowserModule,
@@ -71,8 +71,8 @@ export class MyComponent {
 }
 ```
 
-ng2-completer uses [rxjs](https://github.com/Reactive-Extensions/RxJS) stream as data sources. 
-There are 2 ready made data sources that can be used to fetch local and remote data but it's also possible to provide 
+ng2-completer uses [rxjs](https://github.com/Reactive-Extensions/RxJS) stream as data sources.
+There are 2 ready made data sources that can be used to fetch local and remote data but it's also possible to provide
 a custom source that generates a stream of items.
 
 ### System.js configuration
@@ -111,6 +111,7 @@ Add the following to `System.js` map configuration:
 |minSearchLength|Minimal number of characters required for searching.|number|No|3|
 |overrideSuggested|If true will override suggested and set the model with the value in the input field.|boolean|No|false|
 |openOnFocus|If true will open the dropdown and perform search when the input gets the focus.|boolean|No|false|
+|openOnClick|If true will open and close the dropdown by click.|boolean|No|false|
 |fillHighlighted|If true will set the model with the value in the input field when item is highlighted.|boolean|No|true|
 |pause|Number of msec. to wait before searching.|number|No|250|
 |placeholder|Placeholder text for the search field.|string|No||
@@ -184,7 +185,7 @@ Create remote data provider by calling `CompleterService.remote`.
 
 * `.completer-holder`
 * `.completer-input`
-* `.completer-dropdown-holder` 
+* `.completer-dropdown-holder`
 * `.completer-dropdown`
 * `.completer-searching`
 * `.completer-no-results`

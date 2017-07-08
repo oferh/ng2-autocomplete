@@ -1,6 +1,6 @@
 {
   "name": "ng2-completer",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "ng2 autocomplete/typeahead component",
   "main": "bundles/ng2-completer.js",
   "scripts": {
@@ -35,7 +35,7 @@
   "bugs": {
     "url": "https://github.com/oferh/ng2-completer/issues"
   },
-  "license": "Apache-2.0",
+  "license": "MIT",
   "typings": "./bundles/src/index.d.ts",
   "repository": "oferh/ng2-completer",
   "dependencies": {

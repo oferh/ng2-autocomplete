@@ -24,12 +24,12 @@ const COMPLETER_CONTROL_VALUE_ACCESSOR = {
     selector: "ng2-completer",
     template: `
         <div class="completer-holder" ctrCompleter>
-            <input #ctrInput [attr.id]="inputId.length > 0 ? inputId : null" type="search" class="completer-input" ctrInput [ngClass]="inputClass" 
+            <input #ctrInput [attr.id]="inputId.length > 0 ? inputId : null" type="search" class="completer-input" ctrInput [ngClass]="inputClass"
                 [(ngModel)]="searchStr" (ngModelChange)="onChange($event)" [attr.name]="inputName" [placeholder]="placeholder"
-                [attr.maxlength]="maxChars" [tabindex]="fieldTabindex" [disabled]="disableInput" 
+                [attr.maxlength]="maxChars" [tabindex]="fieldTabindex" [disabled]="disableInput"
                 [clearSelected]="clearSelected" [clearUnselected]="clearUnselected"
-                [overrideSuggested]="overrideSuggested" [openOnFocus]="openOnFocus" [fillHighlighted]="fillHighlighted" 
-                (blur)="onBlur()" (focus)="onFocus()" (keyup)="onKeyup($event)" (keydown)="onKeydown($event)"
+                [overrideSuggested]="overrideSuggested" [openOnFocus]="openOnFocus" [fillHighlighted]="fillHighlighted" [openOnClick]="openOnClick"
+                (blur)="onBlur()" (focus)="onFocus()" (keyup)="onKeyup($event)" (keydown)="onKeydown($event)" (click)="onClick($event)"
                 autocomplete="off" autocorrect="off" autocapitalize="off" />
 
             <div class="completer-dropdown-holder"
@@ -99,7 +99,7 @@ const COMPLETER_CONTROL_VALUE_ACCESSOR = {
     }
 
     .completer-image-default {
-        width: 16px; 
+        width: 16px;
         height: 16px;
         background-image: url("demo/res/img/default.png");
     }
@@ -134,12 +134,14 @@ export class CompleterCmp implements OnInit, ControlValueAccessor, AfterViewChec
     @Input() public inputClass: string;
     @Input() public autofocus = false;
     @Input() public openOnFocus = false;
+    @Input() public openOnClick = false;
     @Input() public initialValue: any;
     @Input() public autoHighlight = false;
 
     @Output() public selected = new EventEmitter<CompleterItem>();
     @Output() public highlighted = new EventEmitter<CompleterItem>();
     @Output() public blur = new EventEmitter<void>();
+    @Output() public click = new EventEmitter<void>();
     @Output("focus") public focusEvent = new EventEmitter<void>();
     @Output() public opened = new EventEmitter<boolean>();
     @Output() public keyup: EventEmitter<any> = new EventEmitter();
@@ -150,9 +152,9 @@ export class CompleterCmp implements OnInit, ControlValueAccessor, AfterViewChec
 
     public searchStr = "";
     public control = new FormControl("");
+    public displaySearching = true;
+    public displayNoResults = true;
 
-    private displaySearching = true;
-    private displayNoResults = true;
     private _onTouchedCallback: () => void = noop;
     private _onChangeCallback: (_: any) => void = noop;
     private _focus: boolean = false;
@@ -260,6 +262,11 @@ export class CompleterCmp implements OnInit, ControlValueAccessor, AfterViewChec
 
     public onFocus() {
         this.focusEvent.emit();
+        this.onTouched();
+    }
+
+    public onClick(event: any) {
+        this.click.emit(event);
         this.onTouched();
     }
 
