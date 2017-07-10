@@ -17,6 +17,7 @@ const KEY_LF = 37;
 const KEY_ES = 27;
 const KEY_EN = 13;
 const KEY_TAB = 9;
+const KEY_BK = 8;
 
 @Directive({
     selector: "[ctrInput]",
@@ -28,6 +29,7 @@ export class CtrInput {
     @Input("fillHighlighted") public fillHighlighted = true;
     @Input("openOnFocus") public openOnFocus = false;
     @Input("openOnClick") public openOnClick = false;
+    @Input("selectOnClick") public selectOnClick = false;
 
     @Output() public ngModelChange: EventEmitter<any> = new EventEmitter();
 
@@ -96,6 +98,11 @@ export class CtrInput {
         }
     }
 
+    @HostListener("paste", ["$event"])
+    public pasteHandler(event: any) {
+        this.completer.open();
+    }
+
     @HostListener("keypress", ["$event"])
     public keypressHandler(event: any) {
         this.completer.open();
@@ -117,6 +124,8 @@ export class CtrInput {
             this.completer.prevRow();
         } else if (event.keyCode === KEY_TAB) {
             this.handleSelection();
+        } else if (event.keyCode === KEY_BK) {
+            this.completer.open();
         } else if (event.keyCode === KEY_ES) {
             // This is very specific to IE10/11 #272
             // without this, IE clears the input text
@@ -160,7 +169,9 @@ export class CtrInput {
 
     @HostListener("click", ["$event"])
     public onClick(event: any) {
-        this.el.nativeElement.select();
+        if (this.selectOnClick) {
+            this.el.nativeElement.select();
+        }
 
         if (this.openOnClick) {
             if (this.completer.isOpen) {

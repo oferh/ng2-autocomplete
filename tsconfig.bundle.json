@@ -15,7 +15,9 @@
             "es2015",
             "dom"
         ],
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "noStrictGenericChecks": true,
+        "skipLibCheck": true
     },
     "angularCompilerOptions": {
         "genDir": ".tmp",
