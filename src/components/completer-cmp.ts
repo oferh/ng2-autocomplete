@@ -36,6 +36,7 @@ const COMPLETER_CONTROL_VALUE_ACCESSOR = {
             <div class="completer-dropdown-holder"
                 *ctrList="dataService;
                     minSearchLength: minSearchLength;
+                    cacheSearchTerm: cacheSearchTerm;
                     pause: pause;
                     autoMatch: autoMatch;
                     initialValue: initialValue;
@@ -140,6 +141,7 @@ export class CompleterCmp implements OnInit, ControlValueAccessor, AfterViewChec
     @Input() public selectOnFocus = false;
     @Input() public initialValue: any;
     @Input() public autoHighlight = false;
+    @Input() public cacheSearchTerm = true;
 
     @Output() public selected = new EventEmitter<CompleterItem>();
     @Output() public highlighted = new EventEmitter<CompleterItem>();
