@@ -100,9 +100,7 @@ export class CtrInput {
             if (this.completer.hasHighlighted()) {
                 event.preventDefault();
             }
-            if (!this.forceSelection || this.completer._hasHighlighted) {
-                this.handleSelection();
-            }
+            this.handleSelection();
         } else if (event.keyCode === KEY_DW) {
             event.preventDefault();
             this.completer.open();
@@ -111,9 +109,7 @@ export class CtrInput {
             event.preventDefault();
             this.completer.prevRow();
         } else if (event.keyCode === KEY_TAB) {
-            if (!this.forceSelection || this.completer._hasHighlighted) {
-                this.handleSelection();
-            }
+            this.handleSelection();
         } else if (event.keyCode === KEY_ES) {
             // This is very specific to IE10/11 #272
             // without this, IE clears the input text
@@ -179,7 +175,8 @@ export class CtrInput {
             this.completer.selectCurrent();
         } else if (this.overrideSuggested) {
             this.completer.onSelected({ title: this.searchStr, originalObject: null });
-        } else {
+        }
+        else if (!this.forceSelection) {
             this.completer.clear();
         }
     }
