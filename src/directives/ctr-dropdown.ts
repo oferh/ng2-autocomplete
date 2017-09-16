@@ -1,7 +1,8 @@
-import { AfterViewInit, Directive, ElementRef, Host, HostListener, OnDestroy, OnInit } from "@angular/core";
+import { AfterViewInit, Directive, ElementRef, Host, HostListener, OnDestroy } from "@angular/core";
 
 import { CompleterItem } from "../components/completer-item";
 import { CtrCompleter, CompleterDropdown } from "./ctr-completer";
+import { isNil } from "../globals";
 
 
 export interface CtrRowElement {
@@ -17,19 +18,15 @@ export class CtrRowItem {
 @Directive({
     selector: "[ctrDropdown]",
 })
-export class CtrDropdown implements CompleterDropdown, OnDestroy, OnInit, AfterViewInit {
+export class CtrDropdown implements CompleterDropdown, OnDestroy, AfterViewInit {
 
     private rows: CtrRowItem[] = [];
-    private currHighlighted: CtrRowItem;
+    private currHighlighted: CtrRowItem | undefined;
     private isScrollOn: boolean;
+    private _rowMouseDown: boolean = false;
 
     constructor( @Host() private completer: CtrCompleter, private el: ElementRef) {
         this.completer.registerDropdown(this);
-    }
-
-    public ngOnInit() {
-        let css = getComputedStyle(this.el.nativeElement);
-        this.isScrollOn = css.maxHeight && css.overflowY === "auto";
     }
 
     public ngOnDestroy() {
@@ -37,7 +34,10 @@ export class CtrDropdown implements CompleterDropdown, OnDestroy, OnInit, AfterV
     }
 
     public ngAfterViewInit() {
+        const css = getComputedStyle(this.el.nativeElement);
         const autoHighlightIndex = this.completer.autoHighlightIndex;
+
+        this.isScrollOn = !!css.maxHeight && css.overflowY === "auto";
         if (autoHighlightIndex) {
             setTimeout(
                 () => {
@@ -50,24 +50,41 @@ export class CtrDropdown implements CompleterDropdown, OnDestroy, OnInit, AfterV
 
     @HostListener("mousedown", ["$event"]) public onMouseDown(event: any) {
         // Support for canceling blur on IE (issue #158)
-        this.completer.cancelBlur(true);
-        setTimeout(
-            () => {
-                this.completer.cancelBlur(false);
-            },
-            0
-        );
+        if (!this._rowMouseDown) {
+            this.completer.cancelBlur(true);
+            setTimeout(
+                () => {
+                    this.completer.cancelBlur(false);
+                },
+                0
+            );
+        } else {
+            this._rowMouseDown = false;
+        }
+        
     }
 
     public registerRow(row: CtrRowItem) {
-        this.rows.push(row);
+        const arrIndex = this.rows.findIndex(_row => _row.index === row.index);
+        if (arrIndex >= 0) {
+            this.rows[arrIndex] = row;
+        } else {
+            this.rows.push(row);
+        }
     }
 
-    public highlightRow(index: number) {
+    public unregisterRow(rowIndex: number) {
+        const arrIndex = this.rows.findIndex(_row => _row.index === rowIndex);
+        this.rows.splice(arrIndex, 1);
+        if (this.currHighlighted && rowIndex === this.currHighlighted.index) {
+            this.highlightRow(null);
+        }
+    }
 
+    public highlightRow(index: number | null) {
         const highlighted = this.rows.find(row => row.index === index);
 
-        if (index < 0) {
+        if (isNil(index) || index! < 0) {
             if (this.currHighlighted) {
                 this.currHighlighted.row.setHighlighted(false);
             }
@@ -90,6 +107,11 @@ export class CtrDropdown implements CompleterDropdown, OnDestroy, OnInit, AfterV
 
         if (this.isScrollOn && this.currHighlighted) {
             const rowTop = this.dropdownRowTop();
+
+            if (!rowTop) {
+                return;
+            }
+
             if (rowTop < 0) {
                 this.dropdownScrollTopTo(rowTop - 1);
             } else {
@@ -97,7 +119,7 @@ export class CtrDropdown implements CompleterDropdown, OnDestroy, OnInit, AfterV
                 if (this.dropdownHeight() < row.getBoundingClientRect().bottom) {
                     this.dropdownScrollTopTo(this.dropdownRowOffsetHeight(row));
                     if (this.el.nativeElement.getBoundingClientRect().bottom - this.dropdownRowOffsetHeight(row) < row.getBoundingClientRect().top) {
-                        this.dropdownScrollTopTo(row.getBoundingClientRect().top - (this.el.nativeElement.getBoundingClientRect().top + parseInt(getComputedStyle(this.el.nativeElement).paddingTop, 10)));
+                        this.dropdownScrollTopTo(row.getBoundingClientRect().top - (this.el.nativeElement.getBoundingClientRect().top + parseInt(getComputedStyle(this.el.nativeElement).paddingTop as string, 10)));
                     }
                 }
             }
@@ -112,6 +134,10 @@ export class CtrDropdown implements CompleterDropdown, OnDestroy, OnInit, AfterV
         this.completer.onSelected(item);
     }
 
+    public rowMouseDown() {
+        this._rowMouseDown = true;
+    }
+
     public selectCurrent() {
         if (this.currHighlighted) {
             this.onSelected(this.currHighlighted.row.getDataItem());
@@ -123,17 +149,21 @@ export class CtrDropdown implements CompleterDropdown, OnDestroy, OnInit, AfterV
 
     public nextRow() {
         let nextRowIndex = 0;
+
         if (this.currHighlighted) {
             nextRowIndex = this.currHighlighted.index + 1;
         }
+
         this.highlightRow(nextRowIndex);
     }
 
     public prevRow() {
         let nextRowIndex = -1;
+
         if (this.currHighlighted) {
             nextRowIndex = this.currHighlighted.index - 1;
         }
+
         this.highlightRow(nextRowIndex);
     }
 
@@ -142,19 +172,23 @@ export class CtrDropdown implements CompleterDropdown, OnDestroy, OnInit, AfterV
     }
 
     private dropdownRowTop() {
+        if (!this.currHighlighted) {
+            return;
+        }
+
         return this.currHighlighted.row.getNativeElement().getBoundingClientRect().top -
             (this.el.nativeElement.getBoundingClientRect().top +
-                parseInt(getComputedStyle(this.el.nativeElement).paddingTop, 10));
+                parseInt(getComputedStyle(this.el.nativeElement).paddingTop as string, 10));
     }
 
     private dropdownHeight() {
         return this.el.nativeElement.getBoundingClientRect().top +
-            parseInt(getComputedStyle(this.el.nativeElement).maxHeight, 10);
+            parseInt(getComputedStyle(this.el.nativeElement).maxHeight as string, 10);
     }
 
     private dropdownRowOffsetHeight(row: any) {
-        let css = getComputedStyle(row);
-        return row.offsetHeight +
-            parseInt(css.marginTop, 10) + parseInt(css.marginBottom, 10);
+        let css = getComputedStyle(row.parentElement);
+        return row.parentElement.offsetHeight +
+            parseInt(css.marginTop as string, 10) + parseInt(css.marginBottom as string, 10);
     }
 }

@@ -44,10 +44,11 @@ export class CompleterCmpMd implements OnInit, ControlValueAccessor {
     @Output() public highlighted = new EventEmitter<CompleterItem>();
     @Output() public blur = new EventEmitter<void>();
 
+    public displaySearching = true;
+    public searchStr = "";
+
     @ViewChild(CtrCompleter) private completer: CtrCompleter;
 
-    private displaySearching = true;
-    private searchStr = "";
     private _onTouchedCallback: () => void = noop;
     private _onChangeCallback: (_: any) => void = noop;
 

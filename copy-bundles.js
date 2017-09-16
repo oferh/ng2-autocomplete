@@ -1,7 +1,7 @@
 var cpr = require('cpr');
 
 let copySource = () => {
-    cpr('src', 'dist/src', {
+    cpr('src', 'bundles/src', {
         deleteFirst: false,
         overwrite: true,
         confirm: false
@@ -14,7 +14,7 @@ let copySource = () => {
 };
 
 let copyAssets = (cb) => {
-    cpr('.', 'dist', {
+    cpr('.', 'bundles', {
         deleteFirst: false,
         overwrite: true,
         confirm: false,

@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Host, HostListener, Input, Renderer, OnInit } from "@angular/core";
+import { Directive, ElementRef, Host, HostListener, Input, Renderer, OnDestroy } from "@angular/core";
 
 import { CompleterItem } from "../components/completer-item";
 import { CtrDropdown, CtrRowElement, CtrRowItem } from "./ctr-dropdown";
@@ -6,7 +6,7 @@ import { CtrDropdown, CtrRowElement, CtrRowItem } from "./ctr-dropdown";
 @Directive({
     selector: "[ctrRow]",
 })
-export class CtrRow implements CtrRowElement, OnInit {
+export class CtrRow implements CtrRowElement, OnDestroy {
 
     private selected = false;
     private _rowIndex: number;
@@ -14,13 +14,16 @@ export class CtrRow implements CtrRowElement, OnInit {
 
     constructor(private el: ElementRef, private renderer: Renderer, @Host() private dropdown: CtrDropdown) { }
 
-    public ngOnInit() {
-        this.dropdown.registerRow(new CtrRowItem(this, this._rowIndex));
+    public ngOnDestroy() {
+        if (this._rowIndex) {
+            this.dropdown.unregisterRow(this._rowIndex);
+        }
     }
 
     @Input()
     set ctrRow(index: number) {
         this._rowIndex = index;
+        this.dropdown.registerRow(new CtrRowItem(this, this._rowIndex));
     }
 
     @Input()
@@ -34,6 +37,10 @@ export class CtrRow implements CtrRowElement, OnInit {
 
     @HostListener("mouseenter", ["$event"]) public onMouseEnter(event: any) {
         this.dropdown.highlightRow(this._rowIndex);
+    }
+
+    @HostListener("mousedown", ["$event"]) public onMouseDown(event: any) {
+        this.dropdown.rowMouseDown();
     }
 
     public setHighlighted(selected: boolean) {

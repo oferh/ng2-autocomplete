@@ -16,4 +16,7 @@
 .completer-dropdown-holder {
     position: absolute;
     background: white;
+    border: solid #000;
+    border-width: 1px 1px;
+    width: 20em;
 }

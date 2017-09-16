@@ -12,7 +12,7 @@ export class CompleterService {
         @Inject(RemoteData) private remoteDataFactory: any // Using any instead of () => LocalData because on AoT errors
     ) { }
 
-    public local(data: any[] | Observable<any>, searchFields = "", titleField = ""): LocalData {
+    public local(data: any[] | Observable<any>, searchFields: string | null = "", titleField: string | null = ""): LocalData {
 
         let localData = this.localDataFactory();
         return localData
@@ -21,7 +21,7 @@ export class CompleterService {
             .titleField(titleField);
     }
 
-    public remote(url: string, searchFields = "", titleField = ""): RemoteData {
+    public remote(url: string | null, searchFields: string | null = "", titleField: string | null = ""): RemoteData {
 
         let remoteData = this.remoteDataFactory();
         return remoteData

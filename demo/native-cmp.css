@@ -21,7 +21,7 @@ h3 {
   padding: 5em 0;
 }
 
-:host >>> .match {
+:host /deep/ .match {
   color: darkred;
 }
 

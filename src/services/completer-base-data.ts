@@ -4,7 +4,7 @@ import { CompleterItem } from "../components/completer-item";
 import { CompleterData } from "./completer-data";
 import { isNil } from "../globals";
 
-export abstract class CompleterBaseData extends Subject<CompleterItem[]> implements CompleterData {
+export abstract class CompleterBaseData extends Subject<CompleterItem[] | null> implements CompleterData {
 
 
     protected _searchFields: string;
@@ -41,14 +41,18 @@ export abstract class CompleterBaseData extends Subject<CompleterItem[]> impleme
     }
 
     public convertToItem(data: any) {
-        let image: string = null;
+        let image: string | null = null;
         let formattedText: string;
-        let formattedDesc: string;
+        let formattedDesc: string | null = null;
 
         if (this._titleField) {
             formattedText = this.extractTitle(data);
         } else {
             formattedText = data;
+        }
+
+        if (typeof formattedText !== "string") {
+            formattedText = JSON.stringify(formattedText);
         }
 
         if (this._descriptionField) {
@@ -97,7 +101,7 @@ export abstract class CompleterBaseData extends Subject<CompleterItem[]> impleme
             .reduce((acc, titlePart) => acc ? `${acc} ${titlePart}` : titlePart);
     }
 
-    protected extractValue(obj: any, key: string) {
+    protected extractValue(obj: any, key: string | null) {
         let keys: string[];
         let result: any;
         if (key) {

@@ -8,7 +8,6 @@ import { CtrCompleter } from "./ctr-completer";
 import { isNil } from "../globals";
 
 
-
 // keyboard events
 const KEY_DW = 40;
 const KEY_RT = 39;
@@ -17,6 +16,11 @@ const KEY_LF = 37;
 const KEY_ES = 27;
 const KEY_EN = 13;
 const KEY_TAB = 9;
+const KEY_BK = 8;
+const KEY_SH = 16;
+const KEY_CL = 20;
+const KEY_F1 = 112;
+const KEY_F12 = 123;
 
 @Directive({
     selector: "[ctrInput]",
@@ -27,13 +31,16 @@ export class CtrInput {
     @Input("overrideSuggested") public overrideSuggested = false;
     @Input("fillHighlighted") public fillHighlighted = true;
     @Input("openOnFocus") public openOnFocus = false;
+    @Input("openOnClick") public openOnClick = false;
+    @Input("selectOnClick") public selectOnClick = false;
+    @Input("selectOnFocus") public selectOnFocus = false;
     @Input("forceSelection") public forceSelection = false;
 
     @Output() public ngModelChange: EventEmitter<any> = new EventEmitter();
 
     private _searchStr = "";
     private _displayStr = "";
-    private blurTimer: Subscription = null;
+    private blurTimer: Subscription | null = null;
 
     constructor( @Host() private completer: CtrCompleter, private ngModel: NgModel, private el: ElementRef) {
         this.completer.selected.subscribe((item: CompleterItem) => {
@@ -47,6 +54,7 @@ export class CtrInput {
             }
             this.ngModelChange.emit(this.searchStr);
         });
+
         this.completer.highlighted.subscribe((item: CompleterItem) => {
             if (this.fillHighlighted) {
                 if (item) {
@@ -58,14 +66,22 @@ export class CtrInput {
                 }
             }
         });
-        this.ngModel.valueChanges.subscribe(value => {
-            if (!isNil(value) && this._displayStr !== value) {
-                if (this.searchStr !== value) {
-                    this.completer.search(value);
-                }
-                this.searchStr = value;
-            }
+
+        this.completer.dataSourceChange.subscribe(() => {
+            this.searchStr = "";
+            this.ngModelChange.emit(this.searchStr);
         });
+
+        if (this.ngModel.valueChanges) {
+            this.ngModel.valueChanges.subscribe(value => {
+                if (!isNil(value) && this._displayStr !== value) {
+                    if (this.searchStr !== value) {
+                        this.completer.search(value);
+                    }
+                    this.searchStr = value;
+                }
+            });
+        }
     }
 
     @HostListener("keyup", ["$event"])
@@ -80,40 +96,56 @@ export class CtrInput {
         }
         else if (event.keyCode === KEY_DW) {
             event.preventDefault();
-
             this.completer.search(this.searchStr);
         }
         else if (event.keyCode === KEY_ES) {
-            this.restoreSearchValue();
-            this.completer.clear();
-        }
-        else {
-            if (this.searchStr) {
-                this.completer.open();
+            if (this.completer.isOpen) {
+                this.restoreSearchValue();
+                this.completer.clear();
+                event.stopPropagation();
+                event.preventDefault();
             }
         }
     }
 
+    @HostListener("paste", ["$event"])
+    public pasteHandler(event: any) {
+        this.completer.open();
+    }
+
     @HostListener("keydown", ["$event"])
     public keydownHandler(event: any) {
-        if (event.keyCode === KEY_EN) {
+        const keyCode = event.keyCode || event.which;
+        if (keyCode === KEY_EN) {
             if (this.completer.hasHighlighted()) {
                 event.preventDefault();
             }
             this.handleSelection();
-        } else if (event.keyCode === KEY_DW) {
+        } else if (keyCode === KEY_DW) {
             event.preventDefault();
             this.completer.open();
             this.completer.nextRow();
-        } else if (event.keyCode === KEY_UP) {
+        } else if (keyCode === KEY_UP) {
             event.preventDefault();
             this.completer.prevRow();
-        } else if (event.keyCode === KEY_TAB) {
+        } else if (keyCode === KEY_TAB) {
             this.handleSelection();
-        } else if (event.keyCode === KEY_ES) {
+        } else if (keyCode === KEY_BK) {
+            this.completer.open();
+        } else if (keyCode === KEY_ES) {
             // This is very specific to IE10/11 #272
             // without this, IE clears the input text
             event.preventDefault();
+            if (this.completer.isOpen) {
+                event.stopPropagation();
+            }
+        } else {
+            if (keyCode !== 0 && keyCode !== KEY_SH && keyCode !== KEY_CL &&
+                (keyCode <= KEY_F1 || keyCode >= KEY_F12) &&
+                !event.ctrlKey && !event.metaKey && !event.altKey
+            ) {
+                this.completer.open();
+            }
         }
     }
 
@@ -130,33 +162,40 @@ export class CtrInput {
             );
             return;
         }
-        this.blurTimer = Observable.timer(200).subscribe(
-            () => {
-                this.blurTimer.unsubscribe();
-                this.blurTimer = null;
-                if (this.overrideSuggested) {
-                    this.completer.onSelected({ title: this.searchStr, originalObject: null });
-                } else {
-                    if (this.clearUnselected && !this.completer.hasSelected) {
-                        this.searchStr = "";
-                        this.ngModelChange.emit(this.searchStr);
-                    } else {
-                        this.restoreSearchValue();
-                    }
-                }
-                this.completer.clear();
-            }
-        );
+
+        if (this.completer.isOpen) {
+            this.blurTimer = Observable.timer(200).subscribe(() => this.doBlur());
+        }
     }
 
-    @HostListener("focus", ["$event"])
+    @HostListener("focus", [])
     public onfocus() {
         if (this.blurTimer) {
             this.blurTimer.unsubscribe();
             this.blurTimer = null;
         }
+
+        if (this.selectOnFocus) {
+            this.el.nativeElement.select();
+        }
+
         if (this.openOnFocus) {
             this.completer.open();
+        }
+    }
+
+    @HostListener("click", ["$event"])
+    public onClick(event: any) {
+        if (this.selectOnClick) {
+            this.el.nativeElement.select();
+        }
+
+        if (this.openOnClick) {
+            if (this.completer.isOpen) {
+                this.completer.clear();
+            } else {
+                this.completer.open();
+            }
         }
     }
 
@@ -177,6 +216,10 @@ export class CtrInput {
             this.completer.onSelected({ title: this.searchStr, originalObject: null });
         }
         else if (!this.forceSelection) {
+            if (this.clearUnselected) {
+                this.searchStr = "";
+                this.ngModelChange.emit(this.searchStr);
+            }
             this.completer.clear();
         }
     }
@@ -188,5 +231,25 @@ export class CtrInput {
                 this.ngModelChange.emit(this.searchStr);
             }
         }
+    }
+
+    private doBlur() {
+        if (this.blurTimer) {
+            this.blurTimer.unsubscribe();
+            this.blurTimer = null;
+        }
+
+        if (this.overrideSuggested) {
+            this.completer.onSelected({ title: this.searchStr, originalObject: null });
+        } else {
+            if (this.clearUnselected && !this.completer.hasSelected) {
+                this.searchStr = "";
+                this.ngModelChange.emit(this.searchStr);
+            } else {
+                this.restoreSearchValue();
+            }
+        }
+
+        this.completer.clear();
     }
 }

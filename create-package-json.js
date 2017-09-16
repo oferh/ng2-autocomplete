@@ -22,5 +22,5 @@ Object.keys(releasePkgJson).forEach(key => {
     basePkgJson[key] = releasePkgJson[key];
 });
 
-const filepath = path.join(__dirname, './dist/package.json');
+const filepath = path.join(__dirname, './bundles/package.json');
 fs.writeFileSync(filepath, JSON.stringify(basePkgJson, null, 2), 'utf-8');

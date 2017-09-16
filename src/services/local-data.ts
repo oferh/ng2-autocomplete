@@ -1,5 +1,6 @@
-import { Injectable } from "@angular/core";
+import { Injectable, EventEmitter } from "@angular/core";
 import { Observable } from "rxjs/Observable";
+import "rxjs/add/operator/catch";
 
 import { CompleterBaseData } from "./completer-base-data";
 import { CompleterItem } from "../components/completer-item";
@@ -7,8 +8,10 @@ import { CompleterItem } from "../components/completer-item";
 @Injectable()
 export class LocalData extends CompleterBaseData {
 
-    private _data: any[];
-    private savedTerm: string;
+    public dataSourceChange: EventEmitter<void> = new EventEmitter<void>();
+
+    protected _data: any[];
+    protected savedTerm: string | null;
 
     constructor() {
         super();
@@ -16,15 +19,21 @@ export class LocalData extends CompleterBaseData {
 
     public data(data: any[] | Observable<any[]>) {
         if (data instanceof Observable) {
-            (<Observable<any[]>>data).subscribe((res) => {
-                this._data = res;
-                if (this.savedTerm) {
-                    this.search(this.savedTerm);
-                }
-            });
+            const data$ = <Observable<any[]>>data;
+            data$
+                .catch(() => [])
+                .subscribe((res) => {
+                    this._data = res;
+                    if (this.savedTerm) {
+                        this.search(this.savedTerm);
+                    }
+                    this.dataSourceChange.emit();
+                });
         } else {
             this._data = <any[]>data;
         }
+
+        this.dataSourceChange.emit();
 
         return this;
     }
@@ -39,7 +48,7 @@ export class LocalData extends CompleterBaseData {
         }
     }
 
-    public convertToItem(data: any): CompleterItem {
+    public convertToItem(data: any): CompleterItem | null {
         return super.convertToItem(data);
     }
 }

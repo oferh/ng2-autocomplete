@@ -1,8 +1,8 @@
 import uglify from 'rollup-plugin-uglify';
 
 export default {
-    entry: 'dist/index.js',
-    dest: 'dist/ng2-completer.umd.js',
+    entry: 'bundles/index.js',
+    dest: 'bundles/ng2-completer.umd.js',
     format: 'umd',
     treeshake: true,
     moduleName: 'ng2Completer',

@@ -1,7 +1,7 @@
 "use strict";
 import { Component, ViewChild } from "@angular/core";
 
-import { Observable } from "rxjs/Rx";
+import { Observable } from "rxjs/Observable";
 
 import { CompleterCmp, CompleterData, CompleterService, CompleterItem, RemoteData } from "../src";
 import { CustomData } from "./custom-data";
@@ -62,19 +62,20 @@ export class NativeCmp {
     ];
     public seinfeldEpisode: any;
     public color2: string = "lig";
+    public dataService: CompleterData;
+    public dataService2: CompleterData;
+    public countryName2 = "";
+    public countryName3 = "";
+    public quote: string | undefined = "";
+    public dataRemote: CompleterData;
+    public dataRemote2: RemoteData;
+    public dataService3: CompleterData;
+    public dataService4: CompleterData;
+    public customData: CustomData;
+    public isOpen: boolean = false;
 
     @ViewChild("openCloseExample") private openCloseExample: CompleterCmp;
-
-    private dataService: CompleterData;
-    private dataService2: CompleterData;
-    private countryName2 = "";
-    private quote = "";
-    private dataRemote: CompleterData;
-    private dataRemote2: RemoteData;
-    private dataService3: CompleterData;
-    private dataService4: CompleterData;
-    private customData: CustomData;
-    private isOpen: boolean = false;
+    @ViewChild("remoteDataExample") private remoteDataExample: CompleterCmp;
 
     constructor(completerService: CompleterService, http: Http) {
         this.dataService = completerService.local(this.countries, "name", "name").imageField("flag");
@@ -85,12 +86,12 @@ export class NativeCmp {
             "name");
         this.dataRemote2 = completerService.remote(
             null,
-            null,
-            "Title");
+            "title",
+            "title");
         this.dataRemote2.urlFormater(term => {
-            return `http://www.omdbapi.com/?s=${term}&type=movie`;
+            return `https://api.themoviedb.org/3/search/movie?api_key=36bf560f8967672b5e428038340f0065&language=en-US&query=${term}&page=1&include_adult=false`;
         });
-        this.dataRemote2.dataField("Search");
+        this.dataRemote2.dataField("results");
         // For async local the source can also be HTTP request
         // let source = http.get("https://raw.githubusercontent.com/oferh/ng2-completer/master/demo/res/data/countries.json?").map((res: any) => res.json());
         let source = Observable.from([this.countries]).delay(3000);
@@ -102,6 +103,7 @@ export class NativeCmp {
     public onCountrySelected(selected: CompleterItem) {
         if (selected) {
             this.countryName2 = selected.title;
+            this.remoteDataExample.blur();
         } else {
             this.countryName2 = "";
         }
@@ -131,5 +133,4 @@ export class NativeCmp {
     public onFocus() {
         this.openCloseExample.focus();
     }
-
 }

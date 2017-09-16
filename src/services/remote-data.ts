@@ -1,3 +1,4 @@
+import { EventEmitter } from "@angular/core";
 import { Http, Response, Headers, RequestOptions } from "@angular/http";
 import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/operator/map";
@@ -7,10 +8,12 @@ import { CompleterBaseData } from "./completer-base-data";
 import { CompleterItem } from "../components/completer-item";
 
 export class RemoteData extends CompleterBaseData {
+    public dataSourceChange: EventEmitter<void> = new EventEmitter<void>();
+
     private _remoteUrl: string;
     private remoteSearch: Subscription;
-    private _urlFormater: (term: string) => string = null;
-    private _dataField: string = null;
+    private _urlFormater: ((term: string) => string) | null = null;
+    private _dataField: string | null = null;
     private _headers: Headers;
     private _requestOptions: RequestOptions;
 
@@ -21,6 +24,8 @@ export class RemoteData extends CompleterBaseData {
 
     public remoteUrl(remoteUrl: string) {
         this._remoteUrl = remoteUrl;
+        this.dataSourceChange.emit();
+
         return this;
     }
 
@@ -64,23 +69,17 @@ export class RemoteData extends CompleterBaseData {
             this._requestOptions.headers = this._headers || new Headers();
         }
 
-        this.remoteSearch = this.http.get(url, this._requestOptions)
+        this.remoteSearch = this.http.get(url, this._requestOptions.merge())
             .map((res: Response) => res.json())
             .map((data: any) => {
                 let matches = this.extractValue(data, this._dataField);
                 return this.extractMatches(matches, term);
             })
-            .map(
-            (matches: any[]) => {
+            .catch(() => [])
+            .subscribe((matches: any[]) => {
                 let results = this.processResults(matches);
                 this.next(results);
-                return results;
-            })
-            .catch((err) => {
-                this.error(err);
-                return null;
-            })
-            .subscribe();
+            });
     }
 
     public cancel() {
@@ -89,7 +88,7 @@ export class RemoteData extends CompleterBaseData {
         }
     }
 
-    public convertToItem(data: any): CompleterItem {
+    public convertToItem(data: any): CompleterItem | null {
         return super.convertToItem(data);
     }
 }

@@ -1,6 +1,79 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 1.6.3 (2017-09-01)
+
+### Fixed bugs
+- Using number on presenting text is causing an 'is not function' error #220
+- Error when ngModel initialized with a non string value #307
+
+## 1.6.2 (2017-08-30)
+
+### Implemented enhancements
+- Add selectOnFocus
+
+### Fixed bugs
+- 'clearUnselected' attribute not working when using tab key #287
+
+## 1.6.1 (2017-08-11)
+
+### Fixed bugs
+- Material design demo is not working #293
+- Duplicate keyup event #284
+- Fix package dependencies #288
+- Error: ViewDestroyedError #266
+
+## 1.6.0 (2017-07-15)
+
+### Implemented enhancements
+- Clear selected and input value when `dataSourceChange` emits
+
+### Fixed bugs
+- Cannot read property 'dataSourceChange' of undefined #279
+- RemoteData search - dropdown list not showing after first http request error (e.g. no Internet connection) #131
+
+## 1.5.4 (2017-07-14)
+
+### Implemented enhancements
+- Add `dataSourceChange` to `CompleterData` to detect changes in the data source 
+
+## 1.5.3 (2017-07-14)
+
+### Implemented enhancements
+- Add a blur() method? #217
+
+### Fixed bugs
+- Dropdown is not opened when using backspace after a value is selected #261
+- On text paste the search doesn't get triggered #265
+- "flase" should be "false" on line 202 @ ng2-completer/demo/native-cmp.html #271
+- Demo not working on Android Chrome 59 #270
+
+## 1.5.2 (2017-06-16)
+
+### Fixed bugs
+- ng build --prod error: #245
+
+## 1.5.1 (2017-06-14)
+
+### Fixed bugs
+- Dropdown doesn't open when typing one character #255
+- Scroll issues
+
+## 1.5.0 (2017-06-09)
+
+### Implemented enhancements
+- Add strict null check to tsconfig.json #201
+- performance improvements
+- prevent flickering when not using `textSearching`
+- add `setDisabledState` to component
+
+### Fixed bugs
+- prevent esc key from bubbling up when dropdown is open
+- autofocus causing an error
+- AOT build issue with `onFocus`
+- searching the same term twice causes different results #216
+- minimum search length behavior weird. #232
+
 ## 1.4.0 (2017-04-22)
 
 ### Implemented enhancements

@@ -1,12 +1,12 @@
 "use strict";
-import { AfterViewChecked, Component, Input, Output, EventEmitter, OnInit, ViewChild, forwardRef, AfterViewInit, ElementRef } from "@angular/core";
+import { AfterViewChecked, ChangeDetectorRef, Component, Input, Output, EventEmitter, OnInit, ViewChild, forwardRef, AfterViewInit, ElementRef } from "@angular/core";
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 import { CtrCompleter } from "../directives/ctr-completer";
 import { CompleterData } from "../services/completer-data";
 import { CompleterService } from "../services/completer-service";
 import { CompleterItem } from "./completer-item";
-import { MAX_CHARS, MIN_SEARCH_LENGTH, PAUSE, TEXT_SEARCHING, TEXT_NO_RESULTS } from "../globals";
+import { MAX_CHARS, MIN_SEARCH_LENGTH, PAUSE, TEXT_SEARCHING, TEXT_NO_RESULTS, isNil } from "../globals";
 
 
 import "rxjs/add/operator/catch";
@@ -24,12 +24,13 @@ const COMPLETER_CONTROL_VALUE_ACCESSOR = {
     selector: "ng2-completer",
     template: `
         <div class="completer-holder" ctrCompleter>
-            <input #ctrInput [attr.id]="inputId.length > 0 ? inputId : null" type="search" class="completer-input" ctrInput [ngClass]="inputClass" 
+            <input #ctrInput [attr.id]="inputId.length > 0 ? inputId : null" type="search" class="completer-input" ctrInput [ngClass]="inputClass"
                 [(ngModel)]="searchStr" (ngModelChange)="onChange($event)" [attr.name]="inputName" [placeholder]="placeholder"
-                [attr.maxlength]="maxChars" [tabindex]="fieldTabindex" [disabled]="disableInput" 
+                [attr.maxlength]="maxChars" [tabindex]="fieldTabindex" [disabled]="disableInput"
                 [clearSelected]="clearSelected" [clearUnselected]="clearUnselected"
                 [overrideSuggested]="overrideSuggested" [openOnFocus]="openOnFocus" [fillHighlighted]="fillHighlighted" 
-                (blur)="onBlur()" (focus)="onFocus()" (keyup)="onKeyup($event)" (keydown)="onKeydown($event)"
+                [openOnClick]="openOnClick" [selectOnClick]="selectOnClick" [selectOnFocus]="selectOnFocus"
+                (blur)="onBlur()" (focus)="onFocus()" (keyup)="onKeyup($event)" (keydown)="onKeydown($event)" (click)="onClick($event)"
                 autocomplete="off" autocorrect="off" autocapitalize="off" />
 
             <div class="completer-dropdown-holder"
@@ -39,13 +40,14 @@ const COMPLETER_CONTROL_VALUE_ACCESSOR = {
                     autoMatch: autoMatch;
                     initialValue: initialValue;
                     autoHighlight: autoHighlight;
+                    displaySearching: displaySearching;
                     let items = results;
                     let searchActive = searching;
                     let isInitialized = searchInitialized;
                     let isOpen = isOpen;">
-                <div class="completer-dropdown" ctrDropdown *ngIf="isInitialized && isOpen && ((items.length > 0 || displayNoResults) || (searchActive && displaySearching))">
+                <div class="completer-dropdown" ctrDropdown *ngIf="isInitialized && isOpen && (( items?.length > 0|| (displayNoResults && !searchActive)) || (searchActive && displaySearching))">
                     <div *ngIf="searchActive && displaySearching" class="completer-searching">{{_textSearching}}</div>
-                    <div *ngIf="!searchActive && (!items || items.length === 0)" class="completer-no-results">{{_textNoResults}}</div>
+                    <div *ngIf="!searchActive && (!items || items?.length === 0)" class="completer-no-results">{{_textNoResults}}</div>
                     <div class="completer-row-wrapper" *ngFor="let item of items; let rowIndex=index">
                         <div class="completer-row" [ctrRow]="rowIndex" [dataItem]="item">
                             <div *ngIf="item.image || item.image === ''" class="completer-image-holder">
@@ -98,7 +100,7 @@ const COMPLETER_CONTROL_VALUE_ACCESSOR = {
     }
 
     .completer-image-default {
-        width: 16px; 
+        width: 16px;
         height: 16px;
         background-image: url("demo/res/img/default.png");
     }
@@ -133,13 +135,17 @@ export class CompleterCmp implements OnInit, ControlValueAccessor, AfterViewChec
     @Input() public inputClass: string;
     @Input() public autofocus = false;
     @Input() public openOnFocus = false;
+    @Input() public openOnClick = false;
+    @Input() public selectOnClick = false;
+    @Input() public selectOnFocus = false;
     @Input() public initialValue: any;
     @Input() public autoHighlight = false;
     @Input() public forceSelection = false;
 
     @Output() public selected = new EventEmitter<CompleterItem>();
     @Output() public highlighted = new EventEmitter<CompleterItem>();
-    @Output() public blur = new EventEmitter<void>();
+    @Output("blur") public blurEvent = new EventEmitter<void>();
+    @Output() public click = new EventEmitter<void>();
     @Output("focus") public focusEvent = new EventEmitter<void>();
     @Output() public opened = new EventEmitter<boolean>();
     @Output() public keyup: EventEmitter<any> = new EventEmitter();
@@ -148,28 +154,40 @@ export class CompleterCmp implements OnInit, ControlValueAccessor, AfterViewChec
     @ViewChild(CtrCompleter) public completer: CtrCompleter;
     @ViewChild("ctrInput") public ctrInput: ElementRef;
 
-    public searchStr = "";
     public control = new FormControl("");
+    public displaySearching = true;
+    public displayNoResults = true;
+    public _textNoResults = TEXT_NO_RESULTS;
+    public _textSearching = TEXT_SEARCHING;
 
-    private displaySearching = true;
-    private displayNoResults = true;
     private _onTouchedCallback: () => void = noop;
     private _onChangeCallback: (_: any) => void = noop;
     private _focus: boolean = false;
     private _open: boolean = false;
-    private _textNoResults = TEXT_NO_RESULTS;
-    private _textSearching = TEXT_SEARCHING;
+    private _searchStr = "";
 
-    constructor(private completerService: CompleterService) { }
+    constructor(private completerService: CompleterService, private cdr: ChangeDetectorRef) { }
 
-    get value(): any { return this.searchStr; };
+    public get value(): any { return this.searchStr; };
 
-    set value(v: any) {
+    public set value(v: any) {
         if (v !== this.searchStr) {
             this.searchStr = v;
         }
         // Propagate the change in any case
         this._onChangeCallback(v);
+    }
+
+    public get searchStr() {
+        return this._searchStr;
+    }
+
+    public set searchStr(value: string) {
+        if (typeof value === "string" || isNil(value)) {
+            this._searchStr = value;
+        } else {
+            this._searchStr = JSON.stringify(value);
+        }
     }
 
     public ngAfterViewInit() {
@@ -180,8 +198,13 @@ export class CompleterCmp implements OnInit, ControlValueAccessor, AfterViewChec
 
     public ngAfterViewChecked(): void {
         if (this._focus) {
-            this.ctrInput.nativeElement.focus();
-            this._focus = false;
+            setTimeout(
+                () => {
+                    this.ctrInput.nativeElement.focus();
+                    this._focus = false;
+                },
+                0
+            );
         }
     }
 
@@ -201,6 +224,10 @@ export class CompleterCmp implements OnInit, ControlValueAccessor, AfterViewChec
         this._onTouchedCallback = fn;
     }
 
+    public setDisabledState(isDisabled: boolean): void {
+        this.disableInput = isDisabled;
+    }
+
     @Input()
     public set datasource(source: CompleterData | string | Array<any>) {
         if (source) {
@@ -218,7 +245,7 @@ export class CompleterCmp implements OnInit, ControlValueAccessor, AfterViewChec
     public set textNoResults(text: string) {
         if (this._textNoResults != text) {
             this._textNoResults = text;
-            this.displayNoResults = this._textNoResults && this._textNoResults !== "false";
+            this.displayNoResults = !!this._textNoResults && this._textNoResults !== "false";
         }
     }
 
@@ -226,7 +253,7 @@ export class CompleterCmp implements OnInit, ControlValueAccessor, AfterViewChec
     public set textSearching(text: string) {
         if (this._textSearching != text) {
             this._textSearching = text;
-            this.displaySearching = this._textSearching && this._textSearching !== "false";
+            this.displaySearching = !!this._textSearching && this._textSearching !== "false";
         }
     }
 
@@ -244,8 +271,9 @@ export class CompleterCmp implements OnInit, ControlValueAccessor, AfterViewChec
     }
 
     public onBlur() {
-        this.blur.emit();
+        this.blurEvent.emit();
         this.onTouched();
+        this.cdr.detectChanges();
     }
 
     public onFocus() {
@@ -253,12 +281,19 @@ export class CompleterCmp implements OnInit, ControlValueAccessor, AfterViewChec
         this.onTouched();
     }
 
+    public onClick(event: any) {
+        this.click.emit(event);
+        this.onTouched();
+    }
+
     public onKeyup(event: any) {
         this.keyup.emit(event);
+        event.stopPropagation();
     }
 
     public onKeydown(event: any) {
         this.keydown.emit(event);
+        event.stopPropagation();
     }
 
     public onChange(value: string) {
@@ -278,6 +313,14 @@ export class CompleterCmp implements OnInit, ControlValueAccessor, AfterViewChec
             this.ctrInput.nativeElement.focus();
         } else {
             this._focus = true;
+        }
+    }
+
+    public blur(): void {
+        if (this.ctrInput) {
+            this.ctrInput.nativeElement.blur();
+        } else {
+            this._focus = false;
         }
     }
 

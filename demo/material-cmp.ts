@@ -1,17 +1,15 @@
 "use strict";
 import { Component } from "@angular/core";
 
-import "rxjs/Rx";
-
 import { CompleterService, CompleterData } from "../src";
 
 let template = require("./material-cmp.html");
-// let style = require("./native-cmp.css");
+let style = require("./material-cmp.css");
 
 @Component({
     selector: "material-cmp",
     template: template,
-    // styles: [style]
+    styles: [style]
 })
 export class MaterialCmp {
     public countries = require("./res/data/countries.json");

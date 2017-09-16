@@ -11,20 +11,20 @@
         "noImplicitAny": true,
         "listFiles": false,
         "noLib": false,
+        "outDir": ".tmp/es5",
         "forceConsistentCasingInFileName": true,
         "noUnusedLocals": true,
         "lib": [
             "es2015",
             "dom"
-        ]
+        ],
+        "strictNullChecks": true,
+        "noStrictGenericChecks": true,
+        "skipLibCheck": true
     },
     "exclude": [
         "node_modules",
         "bundles",
         "dist"
     ] 
-    //,
-    // "awesomeTypescriptLoaderOptions": {
-    //     "useCache": true,
-    // }
 }
