@@ -27,8 +27,8 @@ const COMPLETER_CONTROL_VALUE_ACCESSOR = {
             <input #ctrInput [attr.id]="inputId.length > 0 ? inputId : null" type="search" class="completer-input" ctrInput [ngClass]="inputClass"
                 [(ngModel)]="searchStr" (ngModelChange)="onChange($event)" [attr.name]="inputName" [placeholder]="placeholder"
                 [attr.maxlength]="maxChars" [tabindex]="fieldTabindex" [disabled]="disableInput"
-                [clearSelected]="clearSelected" [clearUnselected]="clearUnselected"
-                [overrideSuggested]="overrideSuggested" [openOnFocus]="openOnFocus" [fillHighlighted]="fillHighlighted" 
+                [clearSelected]="clearSelected" [clearUnselected]="clearUnselected" [forceSelection]="forceSelection"
+                [overrideSuggested]="overrideSuggested" [openOnFocus]="openOnFocus" [fillHighlighted]="fillHighlighted"
                 [openOnClick]="openOnClick" [selectOnClick]="selectOnClick" [selectOnFocus]="selectOnFocus"
                 (blur)="onBlur()" (focus)="onFocus()" (keyup)="onKeyup($event)" (keydown)="onKeydown($event)" (click)="onClick($event)"
                 autocomplete="off" autocorrect="off" autocapitalize="off" />
