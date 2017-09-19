@@ -293,6 +293,31 @@
     </div>
 </div>
 
+<h3>Force selection</h3>
+<p>Local data of colors; with <code>minSearchLength</code>, <code>textSearching</code>, <code>clearUnselected</code> and <code>forceSelection</code></p>
+
+<div class="card">
+    <div class="card-block">
+        <div class="form-group row">
+            <div class="col-5">
+                <ng2-completer [datasource]="dataService4"
+                               [minSearchLength]="1"
+                               [placeholder]="'search color'"
+                               [inputClass]="'form-control'"
+                               [forceSelection]="true"
+                               [clearUnselected]="true"
+                               [(ngModel)]="color5"
+                               [textSearching]="'Please wait...'">
+                </ng2-completer>
+
+            </div>
+            <div class="col-6">
+                <p class="form-control-static"><b> {{color5}}</b></p>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <h3>Events</h3>
 <p>Event triggering with <code>onBlur</code> and <code>onFocus</code> events.</p>

@@ -34,6 +34,7 @@ export class CtrInput {
     @Input("openOnClick") public openOnClick = false;
     @Input("selectOnClick") public selectOnClick = false;
     @Input("selectOnFocus") public selectOnFocus = false;
+    @Input("forceSelection") public forceSelection = false;
 
     @Output() public ngModelChange: EventEmitter<any> = new EventEmitter();
 
@@ -213,7 +214,8 @@ export class CtrInput {
             this.completer.selectCurrent();
         } else if (this.overrideSuggested) {
             this.completer.onSelected({ title: this.searchStr, originalObject: null });
-        } else {
+        }
+        else if (!this.forceSelection) {
             if (this.clearUnselected) {
                 this.searchStr = "";
                 this.ngModelChange.emit(this.searchStr);

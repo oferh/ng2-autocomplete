@@ -115,6 +115,7 @@ Add the following to `System.js` map configuration:
 |selectOnFocus|If true will select the input text upon focus.|boolean|No|false|
 |selectOnClick|If true will select the input text by click.|boolean|No|false|
 |fillHighlighted|If true will set the model with the value in the input field when item is highlighted.|boolean|No|true|
+|forceSelection|If true will prevent from closing dropdown on Enter and Tab keys down if no selection was made.|boolean|No|false|
 |pause|Number of msec. to wait before searching.|number|No|250|
 |placeholder|Placeholder text for the search field.|string|No||
 |textNoResults|Text displayed when the search returned no results. if the string is falsy it won't be displayed|string|No|
