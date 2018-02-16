@@ -71,6 +71,10 @@ export class CtrCompleter {
             this._hasSelected = false;
         }
         if (this.list) {
+             if(term)
+             {
+             term= term.trim();
+             }
             this.list.search(term);
         }
     }
