@@ -55,7 +55,7 @@ const COMPLETER_CONTROL_VALUE_ACCESSOR = {
                     <div *ngIf="!searchActive && (!items || items?.length === 0)"
                     class="completer-no-results">{{ _textNoResults }}</div>
                     <div class="completer-row-wrapper" *ngFor="let item of items; let rowIndex=index">
-                        <div class="completer-row" [ctrRow]="rowIndex" [dataItem]="item">
+                        <div class="completer-row" [ctrRow]="rowIndex" [dataItem]="item" [ngClass]="{'completer-row-disabled': item.disabled }">
                             <div *ngIf="item.image || item.image === ''" class="completer-image-holder">
                                 <img *ngIf="item.image != ''" src="{{item.image}}" class="completer-image" />
                                 <div *ngIf="item.image === ''" class="completer-image-default"></div>
@@ -98,6 +98,11 @@ const COMPLETER_CONTROL_VALUE_ACCESSOR = {
         clear: both;
         display: inline-block;
         width: 103%;
+    }
+
+    .completer-row-disabled {
+        color: #dddddd;
+        pointer-events: none;
     }
 
     .completer-selected-row {
