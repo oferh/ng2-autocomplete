@@ -13,6 +13,7 @@ import {
 } from "../src/ng2-completer";
 import { CustomData } from "./custom-data";
 import { HttpClient } from "@angular/common/http";
+import { CustomDataWithDisabled } from "./custom-data-with-disabled";
 
 let template = require("./native-cmp.html");
 let style = require("./native-cmp.css");
@@ -79,6 +80,7 @@ export class NativeCmp {
     public dataService3: CompleterData;
     public dataService4: CompleterData;
     public customData: CustomData;
+    public beatlesCustomData: CustomDataWithDisabled;
     public isOpen: boolean = false;
 
     @ViewChild("openCloseExample") private openCloseExample: CompleterCmp;
@@ -104,6 +106,7 @@ export class NativeCmp {
         const source = from([this.countries]).delay(3000);
         this.dataService3 = completerService.local(source, "name", "name");
         this.customData = new CustomData(http);
+        this.beatlesCustomData = new CustomDataWithDisabled(http);
         this.dataService4 = completerService.local(this.colors, null, null);
     }
 

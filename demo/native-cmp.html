@@ -197,6 +197,30 @@
     </div>
 </div>
 
+<h3>Custom data provider with disabled elements</h3>
+<p>Custom data provider. Beatles albums from <a href="https://mysafeinfo.com/">mysafeinfo.com</a>.</p>
+<p>Albums released with Apple Records are marked as disabled.</p>
+
+<div class="card">
+    <div class="card-block">
+        <div class="form-group row">
+            <div class="col-5">
+                <ng2-completer pause="400"
+                               [(ngModel)]="beatlesAlbums"
+                               [datasource]="beatlesCustomData"
+                               [minSearchLength]="3"
+                               [inputClass]="'form-control'"
+                               [placeholder]="'search Beatles albums'"
+                               [textSearching]="'Please wait...'">
+                </ng2-completer>
+            </div>
+            <div class="col-6">
+                <p class="form-control-static"><b> {{beatlesAlbums}}</b></p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <h3>Open, close and focus programmatically</h3>
 <p>Local data of colors; Open, Close and Focus programmatically and set ngModel to an initial value with <code>openOnFocus</code>,
     <code>autoHighlight</code>,
