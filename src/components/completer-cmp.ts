@@ -35,7 +35,7 @@ const COMPLETER_CONTROL_VALUE_ACCESSOR = {
                 [openOnClick]="openOnClick" [selectOnClick]="selectOnClick" [selectOnFocus]="selectOnFocus"
                 (blur)="onBlur()" (focus)="onFocus()" (keyup)="onKeyup($event)"
                 (keydown)="onKeydown($event)" (click)="onClick($event)"
-                autocomplete="off" autocorrect="off" autocapitalize="off" />
+                autocomplete="ng2-completer" autocorrect="off" autocapitalize="off" />
 
             <div class="completer-dropdown-holder"
                 *ctrList="dataService;
