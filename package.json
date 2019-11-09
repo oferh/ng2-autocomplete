@@ -81,6 +81,7 @@
     "karma-spec-reporter": "^0.0.32",
     "karma-webpack": "^3.0.0",
     "ngx-bootstrap": "^3.0.0",
+    "observable-profiler": "^0.1.1",
     "raw-loader": "^0.5.1",
     "reflect-metadata": "^0.1.10",
     "rollup": "^0.60.1",
