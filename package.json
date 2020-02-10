@@ -16,6 +16,7 @@
     "compodoc": "compodoc -p tsconfig.json",
     "compodoc-serve": "compodoc -s",
     "start": "cross-env webpack-dev-server --inline --progress --port 8080",
+    "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
     "deploy:gh-pages": "npm run build:demo:prod && cross-env ./node_modules/.bin/gh-pages -d dist/demo"
   },
   "typings": "./ng2-completer.d.ts",
