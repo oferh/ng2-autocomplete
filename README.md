@@ -14,8 +14,8 @@ npm install ng2-completer --save
 
 ## Usage
 
-The module you want to use ng2-completer in must import `Ng2CompleterModule` and `FormsModule` (to use the ngModel
-directive on ng2-completer).  `Ng2CompleterModule` provides the `CompleterService`, and declares the `ng2-completer`
+The module you want to use ng2-completer in must import `NgxCompleterModule` and `FormsModule` (to use the ngModel
+directive on ng2-completer).  `NgxCompleterModule` provides the `CompleterService`, and declares the `ng2-completer`
 directive.
 ```ts
 import { NgModule } from '@angular/core';
@@ -23,7 +23,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from './app.component';
-import { Ng2CompleterModule } from "ng2-completer";
+import { NgxCompleterModule } from "ng2-completer";
 
 
 @NgModule({
@@ -31,7 +31,7 @@ import { Ng2CompleterModule } from "ng2-completer";
       BrowserModule,
       FormsModule,
       HttpClientModule,
-      Ng2CompleterModule,
+      NgxCompleterModule,
   ],
   declarations: [ AppComponent ],
   bootstrap: [ AppComponent ]
