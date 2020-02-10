@@ -1,6 +1,6 @@
 {
   "name": "ngx-completer",
-  "version": "3.0.10",
+  "version": "3.0.11",
   "description": "ngx autocomplete/typeahead component",
   "main": "./bundles/ngx-completer.umd.js",
   "module": "./esm5/ngx-completer.js",
