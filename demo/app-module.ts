@@ -11,7 +11,7 @@ import { AppComponent } from "./app-cmp";
 import { MaterialCmp } from "./material-cmp";
 import { NativeCmp } from "./native-cmp";
 import { routing } from "./app.routing";
-import { Ng2CompleterModule } from "../src/ngx-completer";
+import { NgxCompleterModule } from "../src/ngx-completer";
 import { CompleterCmpMd } from "./completer-cmp-md";
 
 @NgModule({
@@ -20,7 +20,7 @@ import { CompleterCmpMd } from "./completer-cmp-md";
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    Ng2CompleterModule,
+    NgxCompleterModule,
     MatInputModule,
     MatListModule,
     FormsModule,

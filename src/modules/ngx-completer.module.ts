@@ -45,18 +45,18 @@ const providers = [
     ],
     providers
 })
-export class Ng2CompleterModule {
+export class NgxCompleterModule {
 
     public static forRoot(): ModuleWithProviders {
         return {
-            ngModule: Ng2CompleterModule,
+            ngModule: NgxCompleterModule,
             providers
         };
     }
 
     public static forChild(): ModuleWithProviders {
         return {
-            ngModule: Ng2CompleterModule,
+            ngModule: NgxCompleterModule,
             providers
         };
     }

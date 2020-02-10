@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Subject } from "rxjs";
 import { map } from "rxjs/operators";
 
-import { CompleterData, CompleterItem } from "../src/ng2-completer";
+import { CompleterData, CompleterItem } from "../src/ngx-completer";
 
 export class CustomData extends Subject<CompleterItem[]> implements CompleterData {
     constructor(private http: HttpClient) {
