@@ -41,7 +41,7 @@ module.exports = {
             {
                 test: /\.css$/,
                 include: [helpers.root('demo'), helpers.root('src')],
-                loader: 'raw-loader'
+                loaders: ['to-string-loader', 'raw-loader']
             }
         ]
     },
