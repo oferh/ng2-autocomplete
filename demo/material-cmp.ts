@@ -3,16 +3,11 @@ import { Component } from "@angular/core";
 
 import { CompleterService, CompleterData } from "../src/ngx-completer";
 
-// tslint:disable-next-line: no-var-requires
-const template = require("./material-cmp.html");
-// tslint:disable-next-line: no-var-requires
-const style = require("./material-cmp.css");
-
 @Component({
     // tslint:disable-next-line: component-selector
     selector: "material-cmp",
-    template,
-    styles: [style]
+    templateUrl: "./material-cmp.html",
+    styleUrls: ["./material-cmp.css"]
 })
 // tslint:disable-next-line: component-class-suffix
 export class MaterialCmp {

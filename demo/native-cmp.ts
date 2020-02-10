@@ -14,16 +14,12 @@ import {
 import { CustomData } from "./custom-data";
 import { HttpClient } from "@angular/common/http";
 
-// tslint:disable-next-line: no-var-requires
-const template = require("./native-cmp.html");
-// tslint:disable-next-line: no-var-requires
-const style = require("./native-cmp.css");
 
 @Component({
     // tslint:disable-next-line: component-selector
     selector: "native-cmp",
-    template,
-    styles: [style]
+    templateUrl: "./native-cmp.html",
+    styleUrls: ["./native-cmp.css"]
 })
 // tslint:disable-next-line: component-class-suffix
 export class NativeCmp {
