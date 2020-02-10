@@ -26,6 +26,7 @@ export class CtrListContext {
 }
 
 @Directive({
+    // tslint:disable-next-line: directive-selector
     selector: "[ctrList]",
 })
 export class CtrList implements OnInit, CompleterList {
@@ -221,7 +222,9 @@ export class CtrList implements OnInit, CompleterList {
                     }
                 },
                     (error: any) => {
+                        // tslint:disable-next-line: no-console
                         console.error(error);
+                        // tslint:disable-next-line: no-console
                         console.error("Unexpected error in dataService: errors should be handled by the dataService Observable");
                         return [];
                     }

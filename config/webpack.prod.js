@@ -9,7 +9,7 @@ module.exports = webpackMerge(commonConfig, {
 
   output: {
     path: helpers.root('dist/demo'),
-    publicPath: '/ng2-completer/',
+    publicPath: '/ngx-completer/',
     filename: '[name].[hash].js',
     chunkFilename: '[id].[hash].chunk.js'
   },

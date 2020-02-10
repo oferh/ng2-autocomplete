@@ -4,6 +4,7 @@ import { CompleterItem } from "../components/completer-item";
 import { CtrDropdown, CtrRowElement, CtrRowItem } from "./ctr-dropdown";
 
 @Directive({
+    // tslint:disable-next-line: directive-selector
     selector: "[ctrRow]",
 })
 export class CtrRow implements CtrRowElement, OnDestroy {
@@ -46,9 +47,9 @@ export class CtrRow implements CtrRowElement, OnDestroy {
     public setHighlighted(selected: boolean) {
         this.selected = selected;
         if (this.selected) {
-          this.renderer.addClass(this.el.nativeElement, "completer-selected-row");
+            this.renderer.addClass(this.el.nativeElement, "completer-selected-row");
         } else {
-          this.renderer.removeClass(this.el.nativeElement, "completer-selected-row");
+            this.renderer.removeClass(this.el.nativeElement, "completer-selected-row");
         }
     }
 

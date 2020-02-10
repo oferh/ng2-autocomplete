@@ -1,4 +1,4 @@
-# ng2-completer
+# ngx-completer
 
 Auto complete component for Angular 2.
 

@@ -16,12 +16,14 @@ const noop = () => {
 const COMPLETER_CONTROL_VALUE_ACCESSOR = {
     multi: true,
     provide: NG_VALUE_ACCESSOR,
+    // tslint:disable-next-line: no-forward-ref
     useExisting: forwardRef(() => CompleterCmp),
 };
 
 
 @Component({
-    selector: "ng2-completer",
+    // tslint:disable-next-line: component-selector
+    selector: "ngx-completer",
     template: `
         <div class="completer-holder" ctrCompleter>
             <input #ctrInput [attr.id]="inputId.length > 0 ? inputId : null" type="search"
@@ -125,6 +127,7 @@ const COMPLETER_CONTROL_VALUE_ACCESSOR = {
     `],
     providers: [COMPLETER_CONTROL_VALUE_ACCESSOR]
 })
+// tslint:disable-next-line: component-class-suffix
 export class CompleterCmp implements OnInit, ControlValueAccessor, AfterViewChecked, AfterViewInit {
     @Input() public dataService: CompleterData | undefined;
     @Input() public inputName = "";
@@ -152,8 +155,10 @@ export class CompleterCmp implements OnInit, ControlValueAccessor, AfterViewChec
 
     @Output() public selected = new EventEmitter<CompleterItem>();
     @Output() public highlighted = new EventEmitter<CompleterItem>();
+    // tslint:disable-next-line: no-output-rename
     @Output("blur") public blurEvent = new EventEmitter<void>();
     @Output() public click = new EventEmitter<void>();
+    // tslint:disable-next-line: no-output-rename
     @Output("focus") public focusEvent = new EventEmitter<void>();
     @Output() public opened = new EventEmitter<boolean>();
     @Output() public keyup: EventEmitter<any> = new EventEmitter();

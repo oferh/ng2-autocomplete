@@ -9,7 +9,7 @@ coverage
 # demo build
 demo
 bundle/demo
-bundle/ng2-completer-demo.*
+bundle/ngx-completer-demo.*
 bundle/index.html
 webpack.config.js
 

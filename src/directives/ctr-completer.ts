@@ -18,6 +18,7 @@ export interface CompleterDropdown {
 }
 
 @Directive({
+    // tslint:disable-next-line: directive-selector
     selector: "[ctrCompleter]",
 })
 export class CtrCompleter {

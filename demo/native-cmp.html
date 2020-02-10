@@ -1,5 +1,4 @@
-<h1 style="margin-top: 1em;"
-    class="page">Completer Native</h1>
+<h1 style="margin-top: 1em;" class="page">Completer Native</h1>
 
 <h3>Local data with image</h3>
 <p>Local data with countries - using <code>image</code>,
@@ -10,17 +9,10 @@
     <div class="card-block">
         <div class="form-group row">
             <div class="col-5">
-                <ng2-completer class="completer-limit"
-                               [(ngModel)]="countryName"
-                               [datasource]="dataService"
-                               [minSearchLength]="0"
-                               [maxChars]="4"
-                               [inputClass]="'form-control'"
-                               [placeholder]="'Search country'"
-                               [matchClass]="'match'"
-                               [autofocus]="true"
-                               [textSearching]="false">
-                </ng2-completer>
+                <ngx-completer class="completer-limit" [(ngModel)]="countryName" [datasource]="dataService"
+                    [minSearchLength]="0" [maxChars]="4" [inputClass]="'form-control'" [placeholder]="'Search country'"
+                    [matchClass]="'match'" [autofocus]="true" [textSearching]="false">
+                </ngx-completer>
             </div>
             <div class="col-6">
                 <p class="form-control-static"><b>{{countryName || ''}}</b></p>
@@ -40,14 +32,10 @@
     <div class="card-block">
         <div class="form-group row">
             <div class="col-5">
-                <ng2-completer [datasource]="dataService2"
-                               (selected)="onQuoteSelected($event)"
-                               [minSearchLength]="0"
-                               [placeholder]="'Search quote by author name'"
-                               [textNoResults]="'No quotes found'"
-                               [inputClass]="'form-control'"
-                               [matchClass]="'match'">
-                </ng2-completer>
+                <ngx-completer [datasource]="dataService2" (selected)="onQuoteSelected($event)" [minSearchLength]="0"
+                    [placeholder]="'Search quote by author name'" [textNoResults]="'No quotes found'"
+                    [inputClass]="'form-control'" [matchClass]="'match'">
+                </ngx-completer>
             </div>
             <div class="col-6">
                 <p class="form-control-static"><b>{{quote}}</b></p>
@@ -57,7 +45,8 @@
 </div>
 
 <h3>Remote data</h3>
-<p>Remote data of countries and blur on selected with <code>minSearchLength</code>, <code>textSearching</code> and <code>clearSelected</code>
+<p>Remote data of countries and blur on selected with <code>minSearchLength</code>, <code>textSearching</code> and
+    <code>clearSelected</code>
 </p>
 
 
@@ -65,15 +54,10 @@
     <div class="card-block">
         <div class="form-group row">
             <div class="col-5">
-                <ng2-completer #remoteDataExample
-                               [dataService]="dataRemote"
-                               [minSearchLength]="3"
-                               [placeholder]="'Search for country'"
-                               [clearSelected]="true"
-                               (selected)="onCountrySelected($event)"
-                               [inputClass]="'form-control'"
-                               [textSearching]="'Please wait...'">
-                </ng2-completer>
+                <ngx-completer #remoteDataExample [dataService]="dataRemote" [minSearchLength]="3"
+                    [placeholder]="'Search for country'" [clearSelected]="true" (selected)="onCountrySelected($event)"
+                    [inputClass]="'form-control'" [textSearching]="'Please wait...'">
+                </ngx-completer>
             </div>
             <div class="col-6">
                 <p class="form-control-static"><b> {{countryName2}}</b></p>
@@ -91,17 +75,11 @@
     <div class="card-block">
         <div class="form-group row">
             <div class="col-5">
-                <ng2-completer [(ngModel)]="countryName3"
-                               [datasource]="dataService3"
-                               [minSearchLength]="0"
-                               [placeholder]="'search country'"
-                               [overrideSuggested]="true"
-                               [disableInput]="searchcb"
-                               [inputClass]="'form-control'"
-                               [fieldTabindex]="-1"
-                               [inputClass]="'my-input-class'"
-                               [textNoResults]="null">
-                </ng2-completer>
+                <ngx-completer [(ngModel)]="countryName3" [datasource]="dataService3" [minSearchLength]="0"
+                    [placeholder]="'search country'" [overrideSuggested]="true" [disableInput]="searchcb"
+                    [inputClass]="'form-control'" [fieldTabindex]="-1" [inputClass]="'my-input-class'"
+                    [textNoResults]="null">
+                </ngx-completer>
             </div>
             <div class="col-6">
                 <p class="form-control-static"><b> {{countryName3}}</b></p>
@@ -121,27 +99,19 @@
 </div>
 
 <h3>Automatch</h3>
-<p>Local data of colors - <code>autoMatch</code>, <code>inputId</code> and <code>required</code> and <code>clearUnselected</code></p>
+<p>Local data of colors - <code>autoMatch</code>, <code>inputId</code> and <code>required</code> and
+    <code>clearUnselected</code></p>
 
 <div class="card">
     <div class="card-block">
-        <div class="form-group row"
-             [class.has-danger]="!colorRequired.valid">
+        <div class="form-group row" [class.has-danger]="!colorRequired.valid">
             <div class="col-5">
-                <ng2-completer name="colorRequired"
-                               [inputId]="'completer1'"
-                               [datasource]="colors"
-                               [(ngModel)]="color"
-                               [minSearchLength]="0"
-                               [placeholder]="'search color'"
-                               #colorRequired="ngModel"
-                               [autoMatch]="true"
-                               [inputClass]="(colorRequired.valid) ? 'form-control' : 'form-control form-control-danger'"
-                               [clearUnselected]="true"
-                               required>
-                </ng2-completer>
-                <div *ngIf="!colorRequired.valid"
-                     class="form-control-feedback">Sorry, color is required
+                <ngx-completer name="colorRequired" [inputId]="'completer1'" [datasource]="colors" [(ngModel)]="color"
+                    [minSearchLength]="0" [placeholder]="'search color'" #colorRequired="ngModel" [autoMatch]="true"
+                    [inputClass]="(colorRequired.valid) ? 'form-control' : 'form-control form-control-danger'"
+                    [clearUnselected]="true" required>
+                </ngx-completer>
+                <div *ngIf="!colorRequired.valid" class="form-control-feedback">Sorry, color is required
                 </div>
             </div>
             <div class="col-6">
@@ -159,13 +129,10 @@
     <div class="card-block">
         <div class="form-group row">
             <div class="col-5">
-                <ng2-completer [(ngModel)]="countryName5"
-                               [datasource]="dataRemote2"
-                               [minSearchLength]="3"
-                               [placeholder]="'Search movie title'"
-                               [textSearching]="'Please wait...'"
-                               [inputClass]="'form-control'">
-                </ng2-completer>
+                <ngx-completer [(ngModel)]="countryName5" [datasource]="dataRemote2" [minSearchLength]="3"
+                    [placeholder]="'Search movie title'" [textSearching]="'Please wait...'"
+                    [inputClass]="'form-control'">
+                </ngx-completer>
             </div>
             <div class="col-6">
                 <p class="form-control-static"><b>{{countryName5}}</b></p>
@@ -182,13 +149,10 @@
     <div class="card-block">
         <div class="form-group row">
             <div class="col-5">
-                <ng2-completer [(ngModel)]="seinfeldEpisode"
-                               [datasource]="customData"
-                               [minSearchLength]="3"
-                               [inputClass]="'form-control'"
-                               [placeholder]="'search Seinfeld episode'"
-                               [textSearching]="'Please wait...'">
-                </ng2-completer>
+                <ngx-completer [(ngModel)]="seinfeldEpisode" [datasource]="customData" [minSearchLength]="3"
+                    [inputClass]="'form-control'" [placeholder]="'search Seinfeld episode'"
+                    [textSearching]="'Please wait...'">
+                </ngx-completer>
             </div>
             <div class="col-6">
                 <p class="form-control-static"><b> {{seinfeldEpisode}}</b></p>
@@ -198,7 +162,8 @@
 </div>
 
 <h3>Open, close and focus programmatically</h3>
-<p>Local data of colors; Open, Close and Focus programmatically and set ngModel to an initial value with <code>openOnFocus</code>,
+<p>Local data of colors; Open, Close and Focus programmatically and set ngModel to an initial value with
+    <code>openOnFocus</code>,
     <code>autoHighlight</code>,
     <code>fillHighlighted</code>, <code>selectOnFocus</code> and <code>opened</code>
 </p>
@@ -208,33 +173,21 @@
     <div class="card-block">
         <div class="form-group row">
             <div class="col-3 pr-0 border-right-0 with-chevron">
-                <ng2-completer #openCloseExample
-                               class="completer-limit"
-                               [(ngModel)]="color2"
-                               [datasource]="dataService4"
-                               [inputClass]="'form-control'"
-                               [openOnFocus]="true"
-                               (opened)="onOpened($event)"
-                               (focus)="openCloseFocused = true"
-                               (blur)="openCloseFocused = false"
-                               [minSearchLength]="0"
-                               [placeholder]="'search color'"
-                               [autoHighlight]="true"
-                               [selectOnFocus]="true"
-                               [fillHighlighted]="false">
-                </ng2-completer>
+                <ngx-completer #openCloseExample class="completer-limit" [(ngModel)]="color2"
+                    [datasource]="dataService4" [inputClass]="'form-control'" [openOnFocus]="true"
+                    (opened)="onOpened($event)" (focus)="openCloseFocused = true" (blur)="openCloseFocused = false"
+                    [minSearchLength]="0" [placeholder]="'search color'" [autoHighlight]="true" [selectOnFocus]="true"
+                    [fillHighlighted]="false">
+                </ngx-completer>
             </div>
             <div class="col-1 p-0">
-                <div class="w-25 chevron-holder"
-                     [ngClass]="{'dropdown-open': openCloseFocused}">
-                    <span class="chevron fa"
-                          [ngClass]="{'fa-chevron-down': !isOpen, 'fa-chevron-up': isOpen}"
-                          (click)="onToggle()"></span>
+                <div class="w-25 chevron-holder" [ngClass]="{'dropdown-open': openCloseFocused}">
+                    <span class="chevron fa" [ngClass]="{'fa-chevron-down': !isOpen, 'fa-chevron-up': isOpen}"
+                        (click)="onToggle()"></span>
                 </div>
             </div>
             <div class="col-1">
-                <button (click)="onFocus()"
-                        class="btn btn-primary">Focus</button>
+                <button (click)="onFocus()" class="btn btn-primary">Focus</button>
             </div>
             <div class="col">
                 <p class="form-control-static"><b> {{color2}}</b></p>
@@ -244,25 +197,18 @@
 </div>
 
 <h3>Open, close and select all text by click</h3>
-<p>Local data of colors; Open, close and select all text by click with <code>openOnClick</code>, <code>selectOnClick</code>    and <code>openOnFocus</code></p>
+<p>Local data of colors; Open, close and select all text by click with <code>openOnClick</code>,
+    <code>selectOnClick</code> and <code>openOnFocus</code></p>
 
 <div class="card">
     <div class="card-block">
         <div class="form-group row">
             <div class="col-4">
-                <ng2-completer #openCloseExample
-                               class="completer-limit"
-                               [(ngModel)]="color3"
-                               [datasource]="dataService5"
-                               [inputClass]="'form-control'"
-                               [openOnClick]="true"
-                               [selectOnClick]="true"
-                               [openOnFocus]="false"
-                               [minSearchLength]="0"
-                               [placeholder]="'search color'"
-                               [autoHighlight]="true"
-                               [fillHighlighted]="false">
-                </ng2-completer>
+                <ngx-completer #openCloseExample class="completer-limit" [(ngModel)]="color3"
+                    [datasource]="dataService5" [inputClass]="'form-control'" [openOnClick]="true"
+                    [selectOnClick]="true" [openOnFocus]="false" [minSearchLength]="0" [placeholder]="'search color'"
+                    [autoHighlight]="true" [fillHighlighted]="false">
+                </ngx-completer>
             </div>
         </div>
     </div>
@@ -276,14 +222,11 @@
     <div class="card-block">
         <div class="form-group row">
             <div class="col-5">
-                <ng2-completer [datasource]="'https://raw.githubusercontent.com/oferh/ng2-completer/master/demo/res/data/colors.json?'"
-                               [minSearchLength]="1"
-                               [placeholder]="'search color'"
-                               [inputClass]="'form-control'"
-                               [fillHighlighted]="false"
-                               [(ngModel)]="color4"
-                               [textSearching]="'Please wait...'">
-                </ng2-completer>
+                <ngx-completer
+                    [datasource]="'https://raw.githubusercontent.com/oferh/ngx-completer/master/demo/res/data/colors.json?'"
+                    [minSearchLength]="1" [placeholder]="'search color'" [inputClass]="'form-control'"
+                    [fillHighlighted]="false" [(ngModel)]="color4" [textSearching]="'Please wait...'">
+                </ngx-completer>
 
             </div>
             <div class="col-6">
@@ -301,25 +244,18 @@
     <div class="card-block">
         <div class="form-group row">
             <div class="col-5">
-                <ng2-completer [datasource]="'https://raw.githubusercontent.com/oferh/ng2-completer/master/demo/res/data/colors.json?'"
-                               [minSearchLength]="1"
-                               [placeholder]="'search color'"
-                               [inputClass]="'form-control'"
-                               (focus)="focused = true; blurred = false;"
-                               (blur)="focused = false; blurred = true;"
-                               [fillHighlighted]="false"
-                               [textSearching]="'Please wait...'">
-                </ng2-completer>
+                <ngx-completer
+                    [datasource]="'https://raw.githubusercontent.com/oferh/ngx-completer/master/demo/res/data/colors.json?'"
+                    [minSearchLength]="1" [placeholder]="'search color'" [inputClass]="'form-control'"
+                    (focus)="focused = true; blurred = false;" (blur)="focused = false; blurred = true;"
+                    [fillHighlighted]="false" [textSearching]="'Please wait...'">
+                </ngx-completer>
             </div>
             <div class="col">
-                <div class="alert alert-success"
-                     role="alert"
-                     *ngIf="focused">
+                <div class="alert alert-success" role="alert" *ngIf="focused">
                     <code>(focus)='...'</code> <b>onFocus</b> event emitted.
                 </div>
-                <div class="alert alert-success"
-                     role="alert"
-                     *ngIf="blurred">
+                <div class="alert alert-success" role="alert" *ngIf="blurred">
                     <code>(blur)='...'</code> <b>onBlur</b> event emitted.
                 </div>
             </div>
@@ -334,12 +270,9 @@
     <div class="card-block">
         <div class="form-group row">
             <div class="col-3">
-                <ng2-completer [datasource]="colors"
-                               [(ngModel)]="color3"
-                               [minSearchLength]="0"
-                               [placeholder]="'search color'"
-                               [initialValue]="'red'">
-                </ng2-completer>
+                <ngx-completer [datasource]="colors" [(ngModel)]="color3" [minSearchLength]="0"
+                    [placeholder]="'search color'" [initialValue]="'red'">
+                </ngx-completer>
             </div>
             <div class="col-2">
                 <p class="form-control-static"><b> {{color3}}</b></p>

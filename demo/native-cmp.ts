@@ -10,18 +10,22 @@ import {
     CompleterService,
     CompleterItem,
     RemoteData
-} from "../src/ng2-completer";
+} from "../src/ngx-completer";
 import { CustomData } from "./custom-data";
 import { HttpClient } from "@angular/common/http";
 
-let template = require("./native-cmp.html");
-let style = require("./native-cmp.css");
+// tslint:disable-next-line: no-var-requires
+const template = require("./native-cmp.html");
+// tslint:disable-next-line: no-var-requires
+const style = require("./native-cmp.css");
 
 @Component({
+    // tslint:disable-next-line: component-selector
     selector: "native-cmp",
-    template: template,
+    template,
     styles: [style]
 })
+// tslint:disable-next-line: component-class-suffix
 export class NativeCmp {
     public countries = require("./res/data/countries.json");
     public colors = require("./res/data/colors.json");
@@ -89,7 +93,7 @@ export class NativeCmp {
         this.dataService = completerService.local(this.countries, "name", "name").imageField("flag");
         this.dataService2 = completerService.local(this.quotes, "nm", "nm").descriptionField("qt");
         this.dataRemote = completerService.remote(
-            "https://raw.githubusercontent.com/oferh/ng2-completer/master/demo/res/data/countries.json?",
+            "https://raw.githubusercontent.com/oferh/ngx-completer/master/demo/res/data/countries.json?",
             "name",
             "name");
         this.dataRemote2 = completerService.remote(
@@ -101,7 +105,7 @@ export class NativeCmp {
         });
         this.dataRemote2.dataField("results");
         // For async local the source can also be HTTP request
-        // let source = http.get("https://raw.githubusercontent.com/oferh/ng2-completer/master/demo/res/data/countries.json?").map((res: any) => res.json());
+        // let source = http.get("https://raw.githubusercontent.com/oferh/ngx-completer/master/demo/res/data/countries.json?").map((res: any) => res.json());
         const source = from([this.countries]).pipe(delay(3000));
         this.dataService3 = completerService.local(source, "name", "name");
         this.customData = new CustomData(http);

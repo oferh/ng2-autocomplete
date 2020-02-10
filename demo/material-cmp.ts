@@ -1,16 +1,20 @@
 "use strict";
 import { Component } from "@angular/core";
 
-import { CompleterService, CompleterData } from "../src/ng2-completer";
+import { CompleterService, CompleterData } from "../src/ngx-completer";
 
-let template = require("./material-cmp.html");
-let style = require("./material-cmp.css");
+// tslint:disable-next-line: no-var-requires
+const template = require("./material-cmp.html");
+// tslint:disable-next-line: no-var-requires
+const style = require("./material-cmp.css");
 
 @Component({
+    // tslint:disable-next-line: component-selector
     selector: "material-cmp",
-    template: template,
+    template,
     styles: [style]
 })
+// tslint:disable-next-line: component-class-suffix
 export class MaterialCmp {
     public countries = require("./res/data/countries.json");
 

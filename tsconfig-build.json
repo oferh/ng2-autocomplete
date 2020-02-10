@@ -32,7 +32,7 @@
         "skipTemplateCodegen": true,
         "annotateForClosureCompiler": false,
         "strictMetadataEmit": true,
-        "flatModuleOutFile": "ng2-completer.js",
-        "flatModuleId": "ng2-completer"
+        "flatModuleOutFile": "ngx-completer.js",
+        "flatModuleId": "ngx-completer"
     }
 }

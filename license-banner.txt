@@ -1,4 +1,4 @@
 /**
- * @license ng2-completer
+ * @license ngx-completer
  * MIT license
  */

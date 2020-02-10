@@ -37,7 +37,7 @@ export default {
     onwarn: () => { return },
     output: {
         format: 'umd',
-        name: 'ng2.completer',
+        name: 'ngx.completer',
         globals: globals,
         sourcemap: true,
         exports: 'named'

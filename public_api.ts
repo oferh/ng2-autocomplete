@@ -1,4 +1,4 @@
 /**
  * Entry point for all public APIs of the package.
  */
-export * from './src/ng2-completer';
+export * from './src/ngx-completer';

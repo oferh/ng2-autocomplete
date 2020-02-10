@@ -7,11 +7,13 @@ export interface MatchPart {
 }
 
 @Component({
+    // tslint:disable-next-line: component-selector
     selector: "completer-list-item",
     template: `<span class="completer-list-item-holder" [ngClass]= "{'completer-title': type === 'title', 'completer-description': type === 'description'}" >
-        <span class="completer-list-item" *ngFor="let part of parts" [ngClass]= "part.isMatch ? matchClass : null">{{part.text}}</span>
+        <span class="completer-list-item" *ngFor="let part of parts" [ngClass]= "part.isMatch ? matchClass : null">{{ part.text }}</span>
     </span>`
 })
+// tslint:disable-next-line: component-class-suffix
 export class CompleterListItemCmp implements OnInit {
     @Input()
     public text: string = "";

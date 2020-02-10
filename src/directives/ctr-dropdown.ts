@@ -15,6 +15,7 @@ export class CtrRowItem {
 }
 
 @Directive({
+    // tslint:disable-next-line: directive-selector
     selector: "[ctrDropdown]",
 })
 export class CtrDropdown implements CompleterDropdown, OnDestroy, AfterViewInit {
@@ -24,7 +25,7 @@ export class CtrDropdown implements CompleterDropdown, OnDestroy, AfterViewInit 
     private isScrollOn: boolean = false;
     private _rowMouseDown: boolean = false;
 
-    constructor( @Host() private completer: CtrCompleter, private el: ElementRef, private zone: NgZone) {
+    constructor(@Host() private completer: CtrCompleter, private el: ElementRef, private zone: NgZone) {
         this.completer.registerDropdown(this);
     }
 
@@ -183,7 +184,7 @@ export class CtrDropdown implements CompleterDropdown, OnDestroy, AfterViewInit 
     }
 
     private dropdownRowOffsetHeight(row: any) {
-        let css = getComputedStyle(row.parentElement);
+        const css = getComputedStyle(row.parentElement);
         return row.parentElement.offsetHeight +
             parseInt(css.marginTop as string, 10) + parseInt(css.marginBottom as string, 10);
     }

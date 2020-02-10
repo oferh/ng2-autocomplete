@@ -2,27 +2,31 @@
 import { Component, Input, Output, EventEmitter, OnInit, ViewChild, forwardRef } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
-import { CtrCompleter, CompleterData, CompleterItem } from "../src/ng2-completer";
+import { CtrCompleter, CompleterData, CompleterItem } from "../src/ngx-completer";
 import { MAX_CHARS, MIN_SEARCH_LENGTH, PAUSE, TEXT_SEARCHING, TEXT_NO_RESULTS } from "../src/globals";
 
 
 
 
+// tslint:disable-next-line: no-empty
 const noop = () => { };
 
 const COMPLETER_CONTROL_VALUE_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
+    // tslint:disable-next-line: no-forward-ref
     useExisting: forwardRef(() => CompleterCmpMd),
     multi: true
 };
 
 
 @Component({
-    selector: "ng2-completer-md",
+    // tslint:disable-next-line: component-selector
+    selector: "ngx-completer-md",
     templateUrl: "./completer-cmp-md.html",
     styleUrls: ["./completer-cmp-md.css"],
     providers: [COMPLETER_CONTROL_VALUE_ACCESSOR]
 })
+// tslint:disable-next-line: component-class-suffix
 export class CompleterCmpMd implements OnInit, ControlValueAccessor {
     @Input() public dataService: CompleterData | undefined;
     @Input() public inputName = "";
@@ -51,6 +55,7 @@ export class CompleterCmpMd implements OnInit, ControlValueAccessor {
     private _onTouchedCallback: () => void = noop;
     private _onChangeCallback: (_: any) => void = noop;
 
+    // tslint:disable-next-line: no-empty
     constructor() { }
 
     get value(): any { return this.searchStr; };

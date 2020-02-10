@@ -23,16 +23,25 @@ const KEY_F1 = 112;
 const KEY_F12 = 123;
 
 @Directive({
+    // tslint:disable-next-line: directive-selector
     selector: "[ctrInput]",
 })
 export class CtrInput {
+    // tslint:disable-next-line: no-input-rename
     @Input("clearSelected") public clearSelected = false;
+    // tslint:disable-next-line: no-input-rename
     @Input("clearUnselected") public clearUnselected = false;
+    // tslint:disable-next-line: no-input-rename
     @Input("overrideSuggested") public overrideSuggested = false;
+    // tslint:disable-next-line: no-input-rename
     @Input("fillHighlighted") public fillHighlighted = true;
+    // tslint:disable-next-line: no-input-rename
     @Input("openOnFocus") public openOnFocus = false;
+    // tslint:disable-next-line: no-input-rename
     @Input("openOnClick") public openOnClick = false;
+    // tslint:disable-next-line: no-input-rename
     @Input("selectOnClick") public selectOnClick = false;
+    // tslint:disable-next-line: no-input-rename
     @Input("selectOnFocus") public selectOnFocus = false;
 
     @Output() public ngModelChange: EventEmitter<any> = new EventEmitter();
@@ -41,7 +50,7 @@ export class CtrInput {
     private _displayStr = "";
     private blurTimer: Subscription | null = null;
 
-    constructor( @Host() private completer: CtrCompleter, private ngModel: NgModel, private el: ElementRef) {
+    constructor(@Host() private completer: CtrCompleter, private ngModel: NgModel, private el: ElementRef) {
         this.completer.selected.subscribe((item: CompleterItem) => {
             if (!item) {
                 return;
@@ -221,7 +230,7 @@ export class CtrInput {
 
     private restoreSearchValue() {
         if (this.fillHighlighted) {
-            if (this._displayStr != this.searchStr) {
+            if (this._displayStr !== this.searchStr) {
                 this._displayStr = this.searchStr;
                 this.ngModelChange.emit(this.searchStr);
             }
