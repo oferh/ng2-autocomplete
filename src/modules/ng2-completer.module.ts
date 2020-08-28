@@ -47,14 +47,14 @@ const providers = [
 })
 export class Ng2CompleterModule {
 
-    public static forRoot(): ModuleWithProviders {
+    public static forRoot(): ModuleWithProviders<Ng2CompleterModule> {
         return {
             ngModule: Ng2CompleterModule,
             providers
         };
     }
 
-    public static forChild(): ModuleWithProviders {
+    public static forChild(): ModuleWithProviders<Ng2CompleterModule> {
         return {
             ngModule: Ng2CompleterModule,
             providers
